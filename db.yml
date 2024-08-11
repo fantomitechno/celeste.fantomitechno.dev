@@ -1,0 +1,33 @@
+version: "3.7"
+
+name: postgres
+
+services:
+  postgres:
+    container_name: db
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: local
+      POSTGRES_USER: postgres_admin
+      POSTGRES_DB: maintenance
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  pgadmin:
+    container_name: pga
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@renoux.dev
+      PGADMIN_DEFAULT_PASSWORD: local
+    volumes:
+      - pga-data:/var/lib/pgadmin
+      - pga-servers:/pgadmin4/servers.json
+    ports:
+      - "5050:80"
+
+volumes:
+  pg-data:
+  pga-data:
+  pga-servers:
