@@ -6,7 +6,7 @@
 <header>
 	<div class="corner">
 		<img src={foxeline} alt="" />
-		<a href="/"> Celeste progression sheet </a>
+		<a href="/"> Celeste progression </a>
 	</div>
 
 	<nav>
@@ -14,6 +14,11 @@
 			<li>
 				<a aria-current={$page.url.pathname === '/goldens' ? 'page' : undefined} href="/goldens">
 					Goldens
+				</a>
+			</li>
+			<li>
+				<a aria-current={$page.url.pathname === '/maps' ? 'page' : undefined} href="/maps">
+					Maps
 				</a>
 			</li>
 			<li>

@@ -8,7 +8,7 @@
 
 <svelte:head>
 	<title>celeste.fantomitechno.dev</title>
-	<meta name="description" content="Simon's homepage" />
+	<meta name="description" content="Celeste progression sheet" />
 </svelte:head>
 
 <main>

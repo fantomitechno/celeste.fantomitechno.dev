@@ -1,76 +1,50 @@
-import { error, redirect } from "@sveltejs/kit";
-import type { RequestHandler } from "./$types";
-import { discord, lucia } from "$lib/auth";
-import { prisma } from "$lib/prisma";
-import { generateId } from "lucia";
-import { OAuth2RequestError } from "arctic";
+import { error, redirect } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+import { createCookie, discord } from '$lib/auth';
+import { OAuth2RequestError } from 'arctic';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ request, cookies }) => {
-  const stateCookie = cookies.get("discord_oauth_state") ?? null;
+	const stateCookie = cookies.get('discord_oauth_state') ?? null;
 
-  const url = new URL(request.url);
-  const state = url.searchParams.get("state");
-  const code = url.searchParams.get("code");
+	const url = new URL(request.url);
+	const state = url.searchParams.get('state');
+	const code = url.searchParams.get('code');
 
-  if (!state || !stateCookie || !code || stateCookie !== state) {
-    return error(400);
-  }
+	if (!state || !stateCookie || !code || stateCookie !== state) {
+		return error(400);
+	}
 
-  try {
-    const tokens = await discord.validateAuthorizationCode(code);
+	try {
+		const tokens = await discord.validateAuthorizationCode(code);
 
-    const discordUserResponse = await fetch("https://discord.com/api/v10/users/@me", {
-      headers: {
-        Authorization: `Bearer ${tokens.accessToken}`
-      }
-    });
+		const discordUserResponse = await fetch('https://discord.com/api/v10/users/@me', {
+			headers: {
+				Authorization: `Bearer ${tokens.accessToken}`
+			}
+		});
 
-    const discordUser: DiscordUserResult = await discordUserResponse.json();
+		const discordUser: DiscordUserResult = await discordUserResponse.json();
 
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        discord_id: discordUser.id
-      }
-    })
+		if (discordUser.id !== env.ADMIN_ID) {
+			return redirect(302, '/');
+		}
 
-    if (existingUser) {
-      const session = await lucia.createSession(existingUser.id, {});
-      const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies.set(sessionCookie.name, sessionCookie.value, {
-        path: ".",
-        ...sessionCookie.attributes
-      });
-    } else {
-      const userId = generateId(15);
-      await prisma.user.create({
-        data: {
-          id: userId,
-          username: discordUser.username,
-          discord_id: discordUser.id
-        }
-      })
+		cookies.set('token', createCookie(), {
+			path: '/'
+		});
+	} catch (e) {
+		console.log(e);
+		if (e instanceof OAuth2RequestError) {
+			// bad verification code, invalid credentials, etc
+			return error(400);
+		}
+		return error(500);
+	}
 
-      const session = await lucia.createSession(userId, {});
-      const sessionCookie = lucia.createSessionCookie(userId);
-
-      cookies.set(sessionCookie.name, sessionCookie.value, {
-        path: ".",
-        ...sessionCookie.attributes
-      });
-    }
-  } catch (e) {
-    console.log(e);
-    if (e instanceof OAuth2RequestError) {
-      // bad verification code, invalid credentials, etc
-      return error(400);
-    }
-    return error(500);
-  }
-
-  return redirect(302, "/admin");
+	return redirect(302, '/admin');
 };
 
 interface DiscordUserResult {
-  id: string,
-  username: string
+	id: string;
 }

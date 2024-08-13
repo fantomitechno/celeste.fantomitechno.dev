@@ -1,35 +1,41 @@
-import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { Lucia } from "lucia";
-import { Discord } from "arctic"
+import { randomUUID } from 'crypto';
+import { Discord } from 'arctic';
 
-import { dev } from "$app/environment";
-import { prisma } from "./prisma";
-import { env } from "$env/dynamic/private";
+import { env } from '$env/dynamic/private';
 
-const adapter = new PrismaAdapter(prisma.session, prisma.user);// your adapter
+const cookies = new Map<string, number>();
 
-export const discord = new Discord(env.DISCORD_CLIENT_ID, env.DISCORD_CLIENT_SECRET, env.AUTH_CALLBACK)
+export const discord = new Discord(
+	env.DISCORD_CLIENT_ID,
+	env.DISCORD_CLIENT_SECRET,
+	env.AUTH_CALLBACK
+);
 
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: {
-      secure: !dev
-    }
-  },
-  getUserAttributes: (attributes) => {
-    return {
-      discord_id: attributes.discord_id,
-      username: attributes.username
-    }
-  }
-});
+const isValidCookie = (cookie: string) => {
+	clearCookies();
+	const expiration = cookies.get(cookie) ?? 0;
+	return expiration > Date.now();
+};
 
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: {
-      discord_id: string;
-      username: string;
-    };
-  }
-}
+const createCookie = () => {
+	const uuid = randomUUID();
+	cookies.set(uuid, Date.now() + 20 * 60 * 1000);
+	return uuid;
+};
+
+const deleteCookie = (cookie: string) => {
+	return cookies.delete(cookie);
+};
+
+const clearCookies = () => {
+	let cleared = 0;
+	for (const [cookie, expiration] of cookies.entries()) {
+		if (expiration < Date.now()) {
+			cookies.delete(cookie);
+			cleared++;
+		}
+	}
+	return cleared;
+};
+
+export { isValidCookie, createCookie, deleteCookie, clearCookies };

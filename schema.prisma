@@ -45,18 +45,3 @@ model Category {
 
   @@id([id, campaignId])
 }
-
-model User {
-  id         String    @id
-  username   String
-  discord_id String
-  sessions   Session[]
-}
-
-model Session {
-  id        String   @id
-  userId    String
-  expiresAt DateTime
-
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
-}

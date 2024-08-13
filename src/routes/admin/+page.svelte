@@ -12,6 +12,8 @@
 
 		<a href="/admin/create">Create</a>
 		<a href="/admin/update">Update</a>
+
+		<a href="/api/logout">Signout</a>
 	{/if}
 </main>
 

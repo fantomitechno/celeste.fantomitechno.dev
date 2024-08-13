@@ -6,7 +6,10 @@
 	export let results: unknown[];
 
 	const makeSearch = async () => {
-		if (search == '') return (results = []);
+		if (search == '') {
+			results = [];
+			return;
+		}
 
 		const req = await fetch(`/api/search?type=${type}&s=${search}`);
 
