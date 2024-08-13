@@ -44,7 +44,7 @@
 		width: 25%;
 	}
 
-	:global(input:not([type='checkbox'])) {
+	:global(input:not([type='checkbox']):not([type='color'])) {
 		width: 100%;
 	}
 

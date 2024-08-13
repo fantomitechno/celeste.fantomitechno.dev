@@ -1,0 +1,82 @@
+<script lang="ts">
+	import berry from '$lib/images/Strawberry_idle.webp';
+	import ghostBerry from '$lib/images/ghostBerry.gif';
+	import gberry from '$lib/images/Goldberry_Idle.webp';
+	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
+	import redHeart from '$lib/images/RedHeart.gif';
+	import yellowHeart from '$lib/images/YellowHeart.gif';
+	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import type { Map } from '@prisma/client';
+
+	export let map: Map;
+</script>
+
+<a href={'/map/' + map.id}>
+	<li class="map">
+		{map.name}
+		{#if map.berries}
+			<div>
+				<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
+				Got {map.berriesGotten} out of {map.berries}
+			</div>
+		{/if}
+		<div>
+			{#if map.goldenedOn}
+				<img src={gberry} alt="A golden strawberry" />
+				Goldened on {map.goldenedOn.toDateString()}
+			{:else if map.goldenPb && map.numberOfRooms}
+				<img src={gberry} alt="A golden strawberry" />
+				Reached room {map.goldenPb} out of {map.numberOfRooms}
+			{:else}
+				<img src={ghostGBerry} alt="A golden strawberry" />
+				Still haven't tried goldening
+			{/if}
+		</div>
+
+		<div>
+			{#if map.clearedOn}
+				<img src={map.berries <= map.berriesGotten ? yellowHeart : redHeart} alt="A heart" />
+				Cleared on {map.clearedOn.toDateString()}
+			{:else}
+				<img src={ghostHeart} alt="A heart" />
+				Still haven't cleared
+			{/if}
+		</div>
+	</li>
+</a>
+
+<style>
+	.map {
+		border: 0.2em solid var(--color-primary);
+		border-radius: 0.5em;
+		padding: 0.5em 0;
+		padding-left: 1em;
+		margin: 1em 0;
+		background-color: var(--color-bg-2);
+		min-height: 3em;
+
+		width: calc(100% - 1.5em);
+	}
+
+	.map:hover {
+		border: 0.2em solid var(--color-secondary);
+	}
+
+	div {
+		padding-left: 0.5em;
+		display: flex;
+		align-items: center;
+	}
+
+	div > img {
+		padding-right: 0.2em;
+		height: 2em;
+		align-self: center;
+	}
+
+	a,
+	a:hover {
+		text-decoration: none;
+		color: var(--color-text);
+	}
+</style>

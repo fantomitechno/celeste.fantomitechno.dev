@@ -4,7 +4,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/prisma';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (locals.user?.connected) return redirect(301, '/');
+	if (!locals.user?.connected) return redirect(301, '/');
 };
 
 export const actions: Actions = {
@@ -50,6 +50,8 @@ export const actions: Actions = {
 		const campaign = data.get('campaign')?.valueOf() as string | null;
 
 		if (!id || !campaign) return fail(400);
+
+		const color = data.get('color')?.valueOf() as string | null;
 
 		await prisma.category.create({
 			data: {

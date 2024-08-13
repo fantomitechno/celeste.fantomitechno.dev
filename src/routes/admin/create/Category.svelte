@@ -12,6 +12,10 @@
 	</label>
 
 	<label>
+		Color
+		<input name="color" type="color" required />
+	</label>
+	<label>
 		Search campaign
 		<Search type="campaign" bind:results={filteredCampaign} />
 		{#if filteredCampaign.length == 0}
