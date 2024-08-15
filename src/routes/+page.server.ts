@@ -15,6 +15,9 @@ export const load: PageServerLoad = async () => {
 	});
 
 	const goldenBerries = await prisma.map.count({ where: { goldenedOn: { not: null } } });
+	const goldeningBerries = await prisma.map.count({
+		where: { goldenPb: { not: null }, numberOfRooms: { not: null } }
+	});
 	const clearedMaps = await prisma.map.count({ where: { clearedOn: { not: null } } });
 
 	const fullClearedMaps = await prisma.map.count({
@@ -27,6 +30,7 @@ export const load: PageServerLoad = async () => {
 		standaloneMaps,
 		totalBerries,
 		goldenBerries,
+		goldeningBerries,
 		clearedMaps,
 		fullClearedMaps
 	};

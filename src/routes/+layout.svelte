@@ -1,11 +1,16 @@
-<script>
+<script lang="ts">
+	import type { LayoutData } from './$types';
 	import Header from './Header.svelte';
 	import '../app.css';
 	import Footer from './Footer.svelte';
+
+	export let data: LayoutData;
+
+	const { connected } = data;
 </script>
 
 <div class="app">
-	<Header />
+	<Header {connected} />
 
 	<slot />
 

@@ -2,6 +2,7 @@
 	import type { Campaign, Category } from '@prisma/client';
 	import type { PageData } from './$types';
 	import Search from '$lib/components/Search.svelte';
+	import Gamebanana from '$lib/components/Gamebanana.svelte';
 
 	export let data: PageData;
 
@@ -13,37 +14,50 @@
 	let checkedCategory = {} as { [category: string]: boolean };
 	let checkedCampaign = {} as { [campaign: string]: boolean };
 
-	if (map?.Category) checkedCategory[map.Category.name] = true;
-	if (map?.Campaign) checkedCampaign[map.Campaign.name] = true;
+	if (map?.Campaign) {
+		checkedCampaign[map.Campaign.name] = true;
+		if (map?.Category) checkedCategory[`${map.Category.name} - ${map.Campaign.name}`] = true;
+	}
 </script>
 
 <svelte:head>
 	<title>{map?.name ?? '404'}</title>
 	<meta name="description" content={map ? `Informations on ${map.name}` : ''} />
+	<meta name="theme-color" content="#2e1e45" />
 </svelte:head>
 
 <main>
 	{#if !map}
 		404: This map does not exist
 	{:else}
-		<hgroup>
-			<h1>
-				{map.name}
-			</h1>
-			{#if map.Campaign}
-				<h2>
-					Map from <a href={`/campaign/${map.Campaign.id}`}>{map.Campaign.name}</a>
-					{#if map.Category}
-						- <b style:color={map.Category.color}>{map.Category.name}</b>
-					{/if}
-				</h2>
-			{:else}
-				<h2>Standalone map</h2>
+		<span id="title">
+			<hgroup>
+				<h1>
+					{map.name}
+				</h1>
+				{#if map.Campaign}
+					<h2>
+						Map from <a href={`/campaign/${map.Campaign.id}`}>{map.Campaign.name}</a>
+						{#if map.Category}
+							- <b style:color={map.Category.color}>{map.Category.name}</b>
+						{/if}
+					</h2>
+				{:else}
+					<h2>Standalone map</h2>
+				{/if}
+				{#if map.mapper}
+					by {map.mapper}
+				{/if}
+			</hgroup>
+			{#if map.link && map.link != ''}
+				<Gamebanana link={map.link} />
+			{:else if map.Campaign?.link && map.Campaign.link != ''}
+				<Gamebanana link={map.Campaign.link} />
 			{/if}
-		</hgroup>
+		</span>
 
 		{#if data.connected}
-			<form action="?/edit" method="POST">
+			<form action="?/edit" method="POST" id="edit">
 				<span>
 					<div>
 						<label>
@@ -99,7 +113,9 @@
 												type="checkbox"
 												name="category"
 												value={category.id}
-												bind:checked={checkedCategory[category.name]}
+												bind:checked={checkedCategory[
+													`${category.name} - ${category.Campaign.name}`
+												]}
 											/>
 											{category.name} - {category.Campaign.name}
 										</li>
@@ -114,6 +130,10 @@
 									.map(([k, _]) => k)
 									.join(', ')}
 							{/if}
+						</label>
+						<label>
+							Mapper
+							<input name="mapper" type="text" value={map.mapper} />
 						</label>
 					</div>
 					<div>
@@ -152,24 +172,36 @@
 					</div>
 				</span>
 
-				<button
-					disabled={Object.values(checkedCampaign).filter((v) => v).length > 1 ||
-						Object.values(checkedCategory).filter((v) => v).length > 1}>Submit</button
-				>
+				<span>
+					<button
+						disabled={Object.values(checkedCampaign).filter((v) => v).length > 1 ||
+							Object.values(checkedCategory).filter((v) => v).length > 1 ||
+							(Object.values(checkedCategory).filter((v) => v).length == 1 &&
+								Object.values(checkedCampaign).filter((v) => v).length != 1)}>Submit</button
+					>
+					<button formaction="?/delete">Delete</button>
+				</span>
 			</form>
 		{/if}
 	{/if}
 </main>
 
 <style>
+	#title {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
 	a {
 		text-decoration: none;
 	}
+
 	a:hover {
 		color: var(--color-secondary);
 	}
 
-	form {
+	#edit {
 		display: flex;
 		flex-direction: column;
 		align-self: center;
@@ -177,21 +209,15 @@
 		border-radius: 1em;
 		padding: 1em;
 		background-color: var(--color-bg-0);
-		width: 100%;
+		width: calc(100% - 2.4em);
 	}
 
-	span {
+	#edit span {
 		display: flex;
 		flex-direction: row;
 	}
 
-	.metadata {
-		margin-top: 1em;
-		border-top: 0.2em solid var(--color-primary);
-		padding-top: 1em;
-	}
-
-	div {
+	#edit div {
 		width: 45%;
 		margin: 0 auto;
 
@@ -203,22 +229,27 @@
 		width: 100%;
 	}
 
-	form > button {
-		width: 50%;
-		align-self: center;
-		margin-top: 1em;
+	#edit button {
+		width: 45%;
+		margin: 1em auto 0;
 	}
 
-	label {
+	#edit label {
 		margin: 0.5em 0;
 	}
 
-	li {
+	#edit li {
 		display: flex;
 		flex-direction: row;
 	}
 
-	ul {
+	#edit ul {
 		padding: 0;
+	}
+
+	.metadata {
+		margin-top: 1em;
+		border-top: 0.2em solid var(--color-primary);
+		padding-top: 1em;
 	}
 </style>

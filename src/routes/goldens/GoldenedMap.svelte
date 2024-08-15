@@ -11,6 +11,11 @@
 	<hgroup>
 		<h1>
 			{map.name}
+			{#if map.mapper}
+				- by {map.mapper}
+			{:else if map.Campaign?.mapper}
+				- by {map.Campaign.mapper}
+			{/if}
 		</h1>
 		{#if map.Campaign}
 			<h2>
@@ -49,13 +54,10 @@
 	.map {
 		border: 0.2em solid var(--color-primary);
 		border-radius: 0.5em;
-		padding: 0.5em 1em;
+		padding: 0.5em 1em 0.9em;
 		margin: 1em auto;
 		background-color: var(--color-bg-2);
-		min-height: 3em;
-
 		display: block;
-
 		width: 45%;
 	}
 

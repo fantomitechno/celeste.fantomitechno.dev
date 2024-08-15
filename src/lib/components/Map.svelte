@@ -6,14 +6,20 @@
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
 	import ghostHeart from '$lib/images/GhostHeart.gif';
-	import type { Map } from '@prisma/client';
+	import type { Campaign, Map } from '@prisma/client';
 
 	export let map: Map;
+	export let campaign: Campaign | null = null;
 </script>
 
 <a href={'/map/' + map.id}>
 	<li class="map">
 		{map.name}
+		{#if map.mapper}
+			- by {map.mapper}
+		{:else if campaign?.mapper}
+			- by {campaign.mapper}
+		{/if}
 		<span>
 			{#if map.berries}
 				<div>
@@ -51,12 +57,9 @@
 	.map {
 		border: 0.2em solid var(--color-primary);
 		border-radius: 0.5em;
-		padding: 0.5em 0;
-		padding-left: 1em;
+		padding: 0.5em 1em 0.9em;
 		margin: 1em 0;
 		background-color: var(--color-bg-2);
-		min-height: 3em;
-
 		display: block;
 	}
 

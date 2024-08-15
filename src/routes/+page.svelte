@@ -9,6 +9,7 @@
 <svelte:head>
 	<title>celeste.fantomitechno.dev</title>
 	<meta name="description" content="Celeste progression sheet" />
+	<meta name="theme-color" content="#2e1e45" />
 </svelte:head>
 
 <main>
@@ -24,20 +25,29 @@
 
 			<span id="stats">
 				<div>
-					Out of {data.totalBerries._sum.berries ?? 0} berries, I collected {data.totalBerries._sum
-						.berriesGotten ?? 0}
+					Out of {data.totalBerries._sum.berries ?? 0} berr{(data.totalBerries._sum.berries ?? 0) >
+					1
+						? 'ies'
+						: 'y'}, I collected {data.totalBerries._sum.berriesGotten ?? 0}
 				</div>
 				<div>
-					I have registred {data.campaignMaps} maps in {data.campaigns} campaigns
+					I have registred {data.campaignMaps} map{data.campaignMaps > 1 ? 's' : ''} accross {data.campaigns}
+					campaign{data.campaigns > 1 ? 's' : ''}
 				</div>
 				<div>
-					I have registred {data.standaloneMaps} standalone maps
+					I have registred {data.standaloneMaps} standalone map{data.standaloneMaps > 1 ? 's' : ''}
 				</div>
 				<div>
-					I've collected {data.goldenBerries} golden berries
+					I've collected {data.goldenBerries} golden berr{data.goldenBerries > 1 ? 'ies' : 'y'}
 				</div>
 				<div>
-					I've cleared {data.clearedMaps} maps and FCed {data.fullClearedMaps} of them
+					I'm working on {data.goldeningBerries} golden berr{data.goldeningBerries > 1
+						? 'ies'
+						: 'y'}
+				</div>
+				<div>
+					I've cleared {data.clearedMaps} map{data.clearedMaps > 1 ? 's' : ''} and FCed {data.fullClearedMaps}
+					of them
 				</div>
 			</span>
 			<img id="golden" src={golden} alt="7C tree" />
@@ -75,7 +85,7 @@
 	#stats div {
 		background-color: var(--color-primary);
 		border-radius: 5px;
-		margin: 0.5em auto;
+		margin: 0.5em 0;
 		padding: 1em;
 		width: 20%;
 		height: auto;
@@ -86,6 +96,7 @@
 	#stats {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: space-around;
 		margin: 2em 0;
 	}
 </style>

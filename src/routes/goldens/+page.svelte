@@ -9,6 +9,7 @@
 <svelte:head>
 	<title>fantomitechno's Golden List</title>
 	<meta name="description" content={`${data.goldens.length} golden collected`} />
+	<meta name="theme-color" content="#2e1e45" />
 </svelte:head>
 
 <main>

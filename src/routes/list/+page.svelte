@@ -7,6 +7,15 @@
 	let searchValue = '';
 </script>
 
+<svelte:head>
+	<title>fantomitechno's Map List</title>
+	<meta
+		name="description"
+		content={`${data.campaigns.length} campaigns & ${data.standaloneMaps.length} standalone maps`}
+	/>
+	<meta name="theme-color" content="#2e1e45" />
+</svelte:head>
+
 <main>
 	<hgroup>
 		<h1>Maps that I'm interested in</h1>
@@ -27,14 +36,14 @@
 								<h2>{category.name}</h2>
 								<ul>
 									{#each category.maps.filter((m) => !searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1 || category.name.search(new RegExp(searchValue, 'ig')) != -1 || campaign.name.search(new RegExp(searchValue, 'ig')) != -1) as map}
-										<Map {map} />
+										<Map {map} {campaign} />
 									{/each}
 								</ul>
 							</li>
 						{/each}
 						{#if campaign.maps.find((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1))}
 							{#each campaign.maps.filter((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1)) as map}
-								<Map {map} />
+								<Map {map} {campaign} />
 							{/each}
 						{/if}
 					</ul>

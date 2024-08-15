@@ -36,6 +36,7 @@ export const actions: Actions = {
 		const category = data.get('category')?.valueOf() as string | undefined;
 		let campaignId = data.get('campaign')?.valueOf() as string | undefined;
 		const link = data.get('link')?.valueOf() as string | undefined;
+		const mapper = data.get('mapper')?.valueOf() as string | null;
 
 		let clearedOn: Date | null = null;
 		if (cleared) {
@@ -74,7 +75,8 @@ export const actions: Actions = {
 				numberOfRooms,
 				link,
 				name,
-				goldenPb
+				goldenPb,
+				mapper
 			}
 		});
 	}

@@ -1,21 +1,40 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import Campaign from './Campaign.svelte';
+	import Category from './Category.svelte';
+	import Map from './Map.svelte';
 
-	export let data: PageData;
+	let selected = Map;
 </script>
 
 <main>
-	{#if !data.connected}
-		<a href="/api/login">Signin</a>
-	{:else}
-		Boop da fox
+	<hgroup>
+		<h1>Create datas</h1>
+	</hgroup>
+	<div class="tabs">
+		<button class={selected == Map ? 'selected' : ''} onclick={() => (selected = Map)}>
+			Map
+		</button>
+		<button class={selected == Category ? 'selected' : ''} onclick={() => (selected = Category)}>
+			Category
+		</button>
+		<button class={selected == Campaign ? 'selected' : ''} onclick={() => (selected = Campaign)}>
+			Campaign
+		</button>
+	</div>
 
-		<a href="/admin/create">Create</a>
-		<a href="/admin/update">Update</a>
+	<svelte:component this={selected} />
 
-		<a href="/api/logout">Signout</a>
-	{/if}
+	<a href="/api/logout">Signout</a>
 </main>
 
 <style>
+	.tabs button {
+		border: none;
+		border-radius: 10px;
+		margin: auto;
+	}
+
+	.tabs .selected {
+		background-color: var(--color-secondary);
+	}
 </style>

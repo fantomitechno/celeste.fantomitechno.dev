@@ -54,7 +54,7 @@
 		display: flex;
 		flex-direction: column;
 
-		width: 25%;
+		width: 80%;
 	}
 
 	input:not([type='checkbox']):not([type='color']) {

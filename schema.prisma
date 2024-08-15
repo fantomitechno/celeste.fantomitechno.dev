@@ -27,6 +27,8 @@ model Map {
   goldenPb      Int?
   numberOfRooms Int?
   link          String?
+  order         Int       @default(0)
+  mapper        String?
 }
 
 model Campaign {
@@ -35,6 +37,7 @@ model Campaign {
   maps       Map[]
   categories Category[]
   link       String?
+  mapper     String?
 }
 
 model Category {
@@ -44,4 +47,5 @@ model Category {
   Campaign   Campaign @relation(fields: [campaignId], references: [id])
   campaignId String
   maps       Map[]
+  order      Int      @default(0)
 }

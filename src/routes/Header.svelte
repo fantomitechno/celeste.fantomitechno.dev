@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
 	import foxeline from '$lib/images/foxeline.png';
 	import { page } from '$app/stores';
+
+	export let connected: boolean;
 </script>
 
 <header>
@@ -22,7 +24,10 @@
 				</a>
 			</li>
 			<li>
-				<a aria-current={$page.url.pathname === '/admin' ? 'page' : undefined} href="/admin">
+				<a
+					aria-current={$page.url.pathname === '/admin' ? 'page' : undefined}
+					href={connected ? '/admin' : '/api/login'}
+				>
 					Admin
 				</a>
 			</li>

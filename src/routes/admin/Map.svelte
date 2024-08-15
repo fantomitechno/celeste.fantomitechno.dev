@@ -23,6 +23,10 @@
 		<input name="rooms" type="number" />
 	</label>
 	<label>
+		Mapper
+		<input name="mapper" type="text" />
+	</label>
+	<label>
 		Gamebana link
 		<input name="link" type="url" />
 	</label>
@@ -38,7 +42,7 @@
 							type="checkbox"
 							name="category"
 							value={category.id}
-							bind:checked={checkedCategory[category.name]}
+							bind:checked={checkedCategory[`${category.name} - ${category.Campaign.name}`]}
 						/>
 						{category.name} - {category.Campaign.name}
 					</li>
@@ -95,7 +99,7 @@
 		display: flex;
 		flex-direction: column;
 
-		width: 25%;
+		width: 80%;
 	}
 
 	input:not([type='checkbox']):not([type='color']) {

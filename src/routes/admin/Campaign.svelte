@@ -8,6 +8,10 @@
 		<input name="id" type="text" required />
 	</label>
 	<label>
+		Mapper
+		<input name="mapper" type="text" />
+	</label>
+	<label>
 		Gamebana link
 		<input name="link" type="url" />
 	</label>
@@ -21,7 +25,7 @@
 		display: flex;
 		flex-direction: column;
 
-		width: 25%;
+		width: 80%;
 	}
 
 	input:not([type='checkbox']):not([type='color']) {
