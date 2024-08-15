@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { Campaign, Category } from '@prisma/client';
-	import Search from '../../Search.svelte';
+	import Search from '$lib/components/Search.svelte';
 
-	let filteredCategories: Category[] = [];
+	let filteredCategories: (Category & { Campaign: Campaign })[] = [];
 	let filteredCampaign: Campaign[] = [];
 
-	$: checkedCategory = {} as { [category: string]: boolean };
-	$: checkedCampaign = {} as { [campaign: string]: boolean };
+	let checkedCategory = {} as { [category: string]: boolean };
+	let checkedCampaign = {} as { [campaign: string]: boolean };
 </script>
 
 <form method="POST" action="?/map">
@@ -38,9 +38,9 @@
 							type="checkbox"
 							name="category"
 							value={category.id}
-							bind:checked={checkedCategory[category.id]}
+							bind:checked={checkedCategory[category.name]}
 						/>
-						{category.id.toUpperCase()}
+						{category.name} - {category.Campaign.name}
 					</li>
 				{/each}
 			</ul>
@@ -48,9 +48,9 @@
 		{#if Object.values(checkedCategory).filter((v) => v).length == 0}
 			No category selected
 		{:else}
-			{Object.entries(checkedCategory)
+			Selected: {Object.entries(checkedCategory)
 				.filter(([_, v]) => v)
-				.map(([k, _]) => k.toUpperCase())
+				.map(([k, _]) => k)
 				.join(', ')}
 		{/if}
 	</label>
@@ -76,7 +76,7 @@
 		{#if Object.values(checkedCampaign).filter((v) => v).length == 0}
 			No campaign selected
 		{:else}
-			{Object.entries(checkedCampaign)
+			Selected: {Object.entries(checkedCampaign)
 				.filter(([_, v]) => v)
 				.map(([k, _]) => k)
 				.join(', ')}
@@ -88,3 +88,37 @@
 			Object.values(checkedCategory).filter((v) => v).length > 1}>Submit</button
 	>
 </form>
+
+<style>
+	form {
+		margin: 1em 0.5em;
+		display: flex;
+		flex-direction: column;
+
+		width: 25%;
+	}
+
+	input:not([type='checkbox']):not([type='color']) {
+		width: 100%;
+	}
+
+	form > button {
+		width: 50%;
+		align-self: center;
+		margin-top: 1em;
+	}
+
+	label {
+		margin: 0.5em 0;
+	}
+
+	li {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+
+	ul {
+		padding: 0;
+	}
+</style>

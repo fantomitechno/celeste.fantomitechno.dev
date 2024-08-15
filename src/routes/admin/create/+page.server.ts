@@ -1,4 +1,3 @@
-import { env } from '$env/dynamic/private';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/prisma';
@@ -9,7 +8,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	map: async ({ request, locals }) => {
-		if (locals.user?.connected) return fail(401);
+		if (!locals.user?.connected) return fail(401);
 
 		const data = await request.formData();
 
@@ -17,52 +16,56 @@ export const actions: Actions = {
 
 		if (!name) return fail(400);
 
-		const berries = data.get('berries')?.valueOf() as string | null;
+		const berryCount = data.get('berries')?.valueOf() as string | null;
 		const rooms = data.get('rooms')?.valueOf() as string | null;
 		const link = data.get('link')?.valueOf() as string | null;
 		const category = data.get('category')?.valueOf() as string | null;
-		const campaign = data.get('campaign')?.valueOf() as string | null;
+		let campaignId = data.get('campaign')?.valueOf() as string | null;
 
-		let berryCount: number | undefined = undefined;
-		if (berries) berryCount = Number(berries);
+    let categoryId: null | number = null;
+		if (category) categoryId = Number(category);
 
-		let roomCount: number | undefined = undefined;
-		if (rooms) roomCount = Number(rooms);
+		let berries: number | undefined = undefined;
+		if (berryCount) berries = Number(berryCount);
+
+		let numberOfRooms: number | undefined = undefined;
+		if (rooms) numberOfRooms = Number(rooms);
 
 		await prisma.map.create({
 			data: {
 				name,
-				berries: berryCount,
-				numberOfRooms: roomCount,
+				berries,
+				numberOfRooms,
 				link,
-				categoryId: category,
-				campaignId: campaign
+				categoryId,
+				campaignId
 			}
 		});
 	},
 
 	category: async ({ request, locals }) => {
-		if (locals.user?.connected) return fail(401);
+		if (!locals.user?.connected) return fail(401);
 
 		const data = await request.formData();
 
-		const id = data.get('name')?.valueOf() as string | null;
+		const name = data.get('name')?.valueOf() as string | null;
 		const campaign = data.get('campaign')?.valueOf() as string | null;
 
-		if (!id || !campaign) return fail(400);
+		if (!name || !campaign) return fail(400);
 
-		const color = data.get('color')?.valueOf() as string | null;
+		const color = data.get('color')?.valueOf() as string | undefined;
 
 		await prisma.category.create({
 			data: {
-				id,
-				campaignId: campaign
+				name,
+				campaignId: campaign,
+        color
 			}
 		});
 	},
 
 	campaign: async ({ request, locals }) => {
-		if (locals.user?.connected) return fail(401);
+		if (!locals.user?.connected) return fail(401);
 
 		const data = await request.formData();
 

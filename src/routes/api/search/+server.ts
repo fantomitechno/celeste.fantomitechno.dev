@@ -24,11 +24,26 @@ export const GET: RequestHandler = async ({ url }) => {
 		case 'category':
 			results = await prisma.category.findMany({
 				where: {
-					id: {
-						contains: search,
-						mode: 'insensitive'
-					}
-				}
+          OR: [
+            {
+              name: {
+                contains: search,
+                mode: 'insensitive'
+              }
+            },
+            {
+              Campaign: {
+                name: {
+                  contains: search,
+                  mode: 'insensitive'
+                }
+              }
+            }
+          ]
+				},
+        include: {
+          Campaign: true
+        }
 			});
 			break;
 		case 'campaign':

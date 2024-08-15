@@ -7,8 +7,32 @@ export const load: PageServerLoad = async () => {
 			goldenedOn: {
 				not: null
 			}
+		},
+		include: {
+			Campaign: true,
+			Category: true
+		},
+		orderBy: [
+			{
+				goldenedOn: 'desc'
+			}
+		]
+	});
+
+	const goldening = await prisma.map.findMany({
+		where: {
+			goldenPb: {
+				not: null
+			},
+			numberOfRooms: {
+				not: null
+			}
+		},
+		include: {
+			Campaign: true,
+			Category: true
 		}
 	});
 
-	return { goldens };
+	return { goldens, goldening };
 };

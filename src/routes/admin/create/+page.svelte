@@ -35,36 +35,4 @@
 	.tabs .selected {
 		background-color: var(--color-secondary);
 	}
-
-	:global(form) {
-		margin: 1em 0.5em;
-		display: flex;
-		flex-direction: column;
-
-		width: 25%;
-	}
-
-	:global(input:not([type='checkbox']):not([type='color'])) {
-		width: 100%;
-	}
-
-	:global(form > button) {
-		width: 50%;
-		align-self: center;
-		margin-top: 1em;
-	}
-
-	:global(label) {
-		margin: 0.5em 0;
-	}
-
-	:global(li) {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-	}
-
-	:global(ul) {
-		padding: 0;
-	}
 </style>

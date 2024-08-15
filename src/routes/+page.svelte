@@ -28,16 +28,16 @@
 						.berriesGotten ?? 0}
 				</div>
 				<div>
-					I have played {data.campaignMaps} maps in {data.campaigns} campaigns
+					I have registred {data.campaignMaps} maps in {data.campaigns} campaigns
 				</div>
 				<div>
-					I have played {data.standaloneMaps} standalone maps
+					I have registred {data.standaloneMaps} standalone maps
 				</div>
 				<div>
 					I've collected {data.goldenBerries} golden berries
 				</div>
 				<div>
-					I've full cleared {data.fullClearedMaps} maps
+					I've cleared {data.clearedMaps} maps and FCed {data.fullClearedMaps} of them
 				</div>
 			</span>
 			<img id="golden" src={golden} alt="7C tree" />
@@ -75,7 +75,7 @@
 	#stats div {
 		background-color: var(--color-primary);
 		border-radius: 5px;
-		margin: 0.5em;
+		margin: 0.5em auto;
 		padding: 1em;
 		width: 20%;
 		height: auto;

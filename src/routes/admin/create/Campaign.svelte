@@ -14,3 +14,27 @@
 
 	<button>Submit</button>
 </form>
+
+<style>
+	form {
+		margin: 1em 0.5em;
+		display: flex;
+		flex-direction: column;
+
+		width: 25%;
+	}
+
+	input:not([type='checkbox']):not([type='color']) {
+		width: 100%;
+	}
+
+	form > button {
+		width: 50%;
+		align-self: center;
+		margin-top: 1em;
+	}
+
+	label {
+		margin: 0.5em 0;
+	}
+</style>

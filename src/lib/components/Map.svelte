@@ -14,34 +14,36 @@
 <a href={'/map/' + map.id}>
 	<li class="map">
 		{map.name}
-		{#if map.berries}
+		<span>
+			{#if map.berries}
+				<div>
+					<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
+					Got {map.berriesGotten} out of {map.berries}
+				</div>
+			{/if}
 			<div>
-				<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
-				Got {map.berriesGotten} out of {map.berries}
+				{#if map.goldenedOn}
+					<img src={gberry} alt="A golden strawberry" />
+					Goldened on {map.goldenedOn.toDateString()}
+				{:else if map.goldenPb && map.numberOfRooms}
+					<img src={gberry} alt="A golden strawberry" />
+					Reached room {map.goldenPb} out of {map.numberOfRooms}
+				{:else}
+					<img src={ghostGBerry} alt="A golden strawberry" />
+					Still haven't tried goldening
+				{/if}
 			</div>
-		{/if}
-		<div>
-			{#if map.goldenedOn}
-				<img src={gberry} alt="A golden strawberry" />
-				Goldened on {map.goldenedOn.toDateString()}
-			{:else if map.goldenPb && map.numberOfRooms}
-				<img src={gberry} alt="A golden strawberry" />
-				Reached room {map.goldenPb} out of {map.numberOfRooms}
-			{:else}
-				<img src={ghostGBerry} alt="A golden strawberry" />
-				Still haven't tried goldening
-			{/if}
-		</div>
 
-		<div>
-			{#if map.clearedOn}
-				<img src={map.berries <= map.berriesGotten ? yellowHeart : redHeart} alt="A heart" />
-				Cleared on {map.clearedOn.toDateString()}
-			{:else}
-				<img src={ghostHeart} alt="A heart" />
-				Still haven't cleared
-			{/if}
-		</div>
+			<div>
+				{#if map.clearedOn}
+					<img src={map.berries <= map.berriesGotten ? yellowHeart : redHeart} alt="A heart" />
+					Cleared on {map.clearedOn.toDateString()}
+				{:else}
+					<img src={ghostHeart} alt="A heart" />
+					Still haven't cleared
+				{/if}
+			</div>
+		</span>
 	</li>
 </a>
 
@@ -55,7 +57,7 @@
 		background-color: var(--color-bg-2);
 		min-height: 3em;
 
-		width: calc(100% - 1.5em);
+		display: block;
 	}
 
 	.map:hover {
@@ -63,14 +65,16 @@
 	}
 
 	div {
-		padding-left: 0.5em;
+		padding-left: 0.2em;
 		display: flex;
 		align-items: center;
+
+		border-left: 0.2em solid var(--color-primary);
 	}
 
 	div > img {
 		padding-right: 0.2em;
-		height: 2em;
+		width: 2em;
 		align-self: center;
 	}
 

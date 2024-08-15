@@ -14,10 +14,17 @@ export const load: PageServerLoad = async () => {
 		}
 	});
 
-	return { campaigns } as {
+  const standaloneMaps = await prisma.map.findMany({
+    where: {
+      campaignId: null
+    }
+  })
+
+	return { campaigns, standaloneMaps } as {
 		campaigns: (Campaign & {
 			maps: Map[];
 			categories: (Category & { maps: Map[] })[];
 		})[];
+    standaloneMaps: Map[]
 	};
 };

@@ -17,9 +17,9 @@ model Map {
   id            Int       @id @default(autoincrement())
   name          String
   Campaign      Campaign? @relation(fields: [campaignId], references: [id])
-  Category      Category? @relation(fields: [categoryId, campaignId], references: [id, campaignId])
+  Category      Category? @relation(fields: [categoryId], references: [id])
   campaignId    String?
-  categoryId    String?
+  categoryId    Int?
   clearedOn     DateTime?
   goldenedOn    DateTime?
   berriesGotten Int       @default(0)
@@ -38,11 +38,10 @@ model Campaign {
 }
 
 model Category {
-  id         String
-  color      String
+  id         Int      @id @default(autoincrement())
+  name       String
+  color      String   @default("#ffffff")
   Campaign   Campaign @relation(fields: [campaignId], references: [id])
   campaignId String
   maps       Map[]
-
-  @@id([id, campaignId])
 }

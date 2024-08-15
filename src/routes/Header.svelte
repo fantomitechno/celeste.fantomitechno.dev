@@ -17,7 +17,7 @@
 				</a>
 			</li>
 			<li>
-				<a aria-current={$page.url.pathname === '/maps' ? 'page' : undefined} href="/maps">
+				<a aria-current={$page.url.pathname === '/list' ? 'page' : undefined} href="/list">
 					Maps
 				</a>
 			</li>
