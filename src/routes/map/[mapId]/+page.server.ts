@@ -79,5 +79,14 @@ export const actions: Actions = {
 				mapper
 			}
 		});
+	},
+	delete: async ({ locals, params }) => {
+		if (!locals.connected) return fail(401);
+
+		await prisma.map.delete({
+			where: {
+				id: Number(params.mapId)
+			}
+		});
 	}
 };
