@@ -26,7 +26,8 @@ export const load: PageServerLoad = async () => {
 			},
 			numberOfRooms: {
 				not: null
-			}
+			},
+			goldenedOn: null
 		},
 		include: {
 			Campaign: true,
