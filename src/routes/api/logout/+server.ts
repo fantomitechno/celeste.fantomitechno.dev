@@ -1,10 +1,10 @@
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createCookie, discord } from '$lib/auth';
-import { OAuth2RequestError } from 'arctic';
-import { env } from '$env/dynamic/private';
+import { deleteCookie } from '$lib/auth';
 
 export const GET: RequestHandler = async ({ request, cookies }) => {
+	deleteCookie(cookies.get('token') ?? '');
+
 	cookies.delete('token', {
 		path: '/'
 	});
