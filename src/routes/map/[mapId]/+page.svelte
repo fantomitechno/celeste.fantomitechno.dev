@@ -47,6 +47,8 @@
 				{/if}
 				{#if map.mapper}
 					by {map.mapper}
+				{:else if map.Campaign?.mapper}
+					by {map.Campaign.mapper}
 				{/if}
 			</hgroup>
 			{#if map.link && map.link != ''}
