@@ -3,12 +3,12 @@ import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/prisma';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (!locals.user?.connected) return redirect(301, '/');
+	if (!locals.connected) return redirect(301, '/');
 };
 
 export const actions: Actions = {
 	map: async ({ request, locals }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		const data = await request.formData();
 
@@ -46,7 +46,7 @@ export const actions: Actions = {
 	},
 
 	category: async ({ request, locals }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		const data = await request.formData();
 
@@ -67,7 +67,7 @@ export const actions: Actions = {
 	},
 
 	campaign: async ({ request, locals }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		const data = await request.formData();
 

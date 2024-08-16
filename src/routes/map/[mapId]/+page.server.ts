@@ -13,12 +13,12 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		}
 	});
 
-	return { map, connected: locals.user?.connected };
+	return { map, connected: locals.connected };
 };
 
 export const actions: Actions = {
 	edit: async ({ request, locals, params }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		const data = await request.formData();
 

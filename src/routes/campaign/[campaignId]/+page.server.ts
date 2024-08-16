@@ -58,13 +58,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		clearedMaps,
 		fullClearedMaps,
 		totalBerries,
-		connected: locals.user?.connected
+		connected: locals.connected
 	};
 };
 
 export const actions: Actions = {
 	edit: async ({ request, locals, params }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		const data = await request.formData();
 
@@ -86,7 +86,7 @@ export const actions: Actions = {
 		});
 	},
 	delete: async ({ locals, params }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 
 		await prisma.map.updateMany({
 			where: {
@@ -112,7 +112,7 @@ export const actions: Actions = {
 		return redirect(302, '/list');
 	},
 	deleteAll: async ({ locals, params }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 		console.log('deleteAll');
 
 		await prisma.map.deleteMany({
@@ -135,7 +135,7 @@ export const actions: Actions = {
 		return redirect(302, '/list');
 	},
 	deleteCategory: async ({ request, locals, params }) => {
-		if (!locals.user?.connected) return fail(401);
+		if (!locals.connected) return fail(401);
 		const data = await request.formData();
 		const categoryId = data.get('id')?.valueOf() as string | undefined;
 
