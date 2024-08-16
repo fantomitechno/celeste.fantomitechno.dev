@@ -42,7 +42,12 @@
 
 			<div>
 				{#if map.clearedOn}
-					<img src={map.berries <= map.berriesGotten ? yellowHeart : redHeart} alt="A heart" />
+					<img
+						src={map.berries <= map.berriesGotten && map.berriesGotten != 0
+							? yellowHeart
+							: redHeart}
+						alt="A heart"
+					/>
 					Cleared on {map.clearedOn.toDateString()}
 				{:else}
 					<img src={ghostHeart} alt="A heart" />

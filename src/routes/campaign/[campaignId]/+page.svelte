@@ -52,7 +52,7 @@
 			</span>
 			<span>
 				<img
-					src={totalBerries._sum.berries == totalBerries._sum.berriesGotten &&
+					src={(totalBerries._sum.berries ?? 0) >= (totalBerries._sum.berriesGotten ?? 0) &&
 					totalBerries._sum.berriesGotten != 0
 						? berry
 						: ghostBerry}
