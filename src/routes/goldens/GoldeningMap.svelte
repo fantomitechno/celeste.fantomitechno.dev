@@ -87,7 +87,7 @@
 		margin-top: 1em;
 	}
 
-	div {
+	div:not(.overlay) {
 		padding-left: 0.2em;
 		display: flex;
 		align-items: center;
