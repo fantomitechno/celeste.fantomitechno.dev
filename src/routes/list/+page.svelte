@@ -36,14 +36,18 @@
 								<h2>{category.name}</h2>
 								<ul>
 									{#each category.maps.filter((m) => !searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1 || category.name.search(new RegExp(searchValue, 'ig')) != -1 || campaign.name.search(new RegExp(searchValue, 'ig')) != -1) as map}
-										<Map {map} {campaign} />
+										<li>
+											<Map {map} {campaign} />
+										</li>
 									{/each}
 								</ul>
 							</li>
 						{/each}
 						{#if campaign.maps.find((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1))}
 							{#each campaign.maps.filter((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1)) as map}
-								<Map {map} {campaign} />
+								<li>
+									<Map {map} {campaign} />
+								</li>
 							{/each}
 						{/if}
 					</ul>
@@ -51,7 +55,9 @@
 			</a>
 		{/each}
 		{#each data.standaloneMaps.filter((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1)) as map}
-			<Map {map} />
+			<li>
+				<Map {map} />
+			</li>
 		{/each}
 	</ul>
 </main>

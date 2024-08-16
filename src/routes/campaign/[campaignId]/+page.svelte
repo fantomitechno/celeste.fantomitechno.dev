@@ -81,20 +81,55 @@
 						{category.name}
 						<ul>
 							{#each category.maps as map}
-								<Map {map} {campaign} />
+								<li class="map-order">
+									<Map {map} {campaign} />
+									{#if data.connected}
+										<form action="?/editMapOrder" method="POST" class="order">
+											<input name="id" type="text" value={map.id} hidden />
+											<label for="order"> Order </label>
+											<select name="order" id="order">
+												{#each category.maps as _, index}
+													<option selected={map.order == index} value={index}>{index}</option>
+												{/each}
+											</select>
+											<button>Submit</button>
+										</form>
+									{/if}
+								</li>
 							{/each}
 						</ul>
 						{#if data.connected}
-							<form action="?/deleteCategory" method="POST" id="delete">
+							<form action="?/editCategoryOrder" method="POST" class="order">
 								<input name="id" type="text" value={category.id} hidden />
-								<button>Delete</button>
+								<label for="order"> Order </label>
+								<select name="order" id="order">
+									{#each campaign.categories as _, index}
+										<option selected={category.order == index} value={index}>{index}</option>
+									{/each}
+								</select>
+								<button>Submit</button>
+								<button formaction="?/deleteCategory">Delete</button>
 							</form>
 						{/if}
 					</li>
 				{/each}
 				{#if campaign.maps.find((m) => !m.categoryId)}
 					{#each campaign.maps.filter((m) => !m.categoryId) as map}
-						<Map {map} {campaign} />
+						<li class="map-order">
+							<Map {map} {campaign} />
+							{#if data.connected}
+								<form action="?/editMapOrder" method="POST" class="order">
+									<input name="id" type="text" value={map.id} hidden />
+									<label for="order"> Order </label>
+									<select name="order" id="order">
+										{#each campaign.maps.filter((m) => !m.categoryId) as _, index}
+											<option selected={map.order == index} value={index}>{index}</option>
+										{/each}
+									</select>
+									<button>Submit</button>
+								</form>
+							{/if}
+						</li>
 					{/each}
 				{/if}
 			</ul>
@@ -224,5 +259,31 @@
 
 	#edit label {
 		margin: 0.5em 0;
+	}
+
+	.order {
+		display: flex;
+		flex-direction: column;
+		align-self: center;
+		flex-grow: 1;
+		border: 0.2em solid var(--color-primary);
+		border-radius: 0.5em;
+		padding: 0.5em 1em 0.9em;
+		margin: 1em 0;
+		background-color: var(--color-bg-2);
+		height: 100%;
+		gap: 0.5em;
+	}
+
+	.order select,
+	.order option {
+		height: 100%;
+		font: inherit;
+	}
+
+	.map-order {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
 	}
 </style>

@@ -8,56 +8,52 @@
 	import ghostHeart from '$lib/images/GhostHeart.gif';
 	import flagCP from '$lib/images/FlagCP.gif';
 
-	import type { Campaign, Map } from '@prisma/client';
+	import type { Campaign, Category, Map } from '@prisma/client';
 
 	export let map: Map;
 	export let campaign: Campaign | null = null;
 </script>
 
-<a href={'/map/' + map.id}>
-	<li class="map">
-		{map.name}
-		{#if map.mapper}
-			- by {map.mapper}
-		{:else if campaign?.mapper}
-			- by {campaign.mapper}
+<a href={'/map/' + map.id} class="map">
+	{map.name}
+	{#if map.mapper}
+		- by {map.mapper}
+	{:else if campaign?.mapper}
+		- by {campaign.mapper}
+	{/if}
+	<span>
+		{#if map.berries}
+			<div>
+				<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
+				Got {map.berriesGotten} out of {map.berries}
+			</div>
 		{/if}
-		<span>
-			{#if map.berries}
-				<div>
-					<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
-					Got {map.berriesGotten} out of {map.berries}
-				</div>
+		<div>
+			{#if map.goldenedOn}
+				<img src={gberry} alt="A golden strawberry" />
+				Goldened on {map.goldenedOn.toDateString()}
+			{:else if map.goldenPb && map.numberOfRooms}
+				<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
+				Reached room {map.goldenPb} out of {map.numberOfRooms}
+			{:else}
+				<img src={ghostGBerry} alt="A golden strawberry" />
+				Still haven't tried goldening
 			{/if}
-			<div>
-				{#if map.goldenedOn}
-					<img src={gberry} alt="A golden strawberry" />
-					Goldened on {map.goldenedOn.toDateString()}
-				{:else if map.goldenPb && map.numberOfRooms}
-					<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
-					Reached room {map.goldenPb} out of {map.numberOfRooms}
-				{:else}
-					<img src={ghostGBerry} alt="A golden strawberry" />
-					Still haven't tried goldening
-				{/if}
-			</div>
+		</div>
 
-			<div>
-				{#if map.clearedOn}
-					<img
-						src={map.berries <= map.berriesGotten && map.berriesGotten != 0
-							? yellowHeart
-							: redHeart}
-						alt="A heart"
-					/>
-					Cleared on {map.clearedOn.toDateString()}
-				{:else}
-					<img src={ghostHeart} alt="A heart" />
-					Still haven't cleared
-				{/if}
-			</div>
-		</span>
-	</li>
+		<div>
+			{#if map.clearedOn}
+				<img
+					src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
+					alt="A heart"
+				/>
+				Cleared on {map.clearedOn.toDateString()}
+			{:else}
+				<img src={ghostHeart} alt="A heart" />
+				Still haven't cleared
+			{/if}
+		</div>
+	</span>
 </a>
 
 <style>
@@ -68,6 +64,7 @@
 		margin: 1em 0;
 		background-color: var(--color-bg-2);
 		display: block;
+		flex-grow: 7;
 	}
 
 	.map:hover {

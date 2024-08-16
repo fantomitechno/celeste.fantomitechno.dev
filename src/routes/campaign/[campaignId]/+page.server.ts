@@ -5,10 +5,27 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const campaign = await prisma.campaign.findFirst({
 		include: {
-			maps: true,
+			maps: {
+				orderBy: [
+					{
+						order: 'asc'
+					}
+				]
+			},
 			categories: {
+				orderBy: [
+					{
+						order: 'asc'
+					}
+				],
 				include: {
-					maps: true
+					maps: {
+						orderBy: [
+							{
+								order: 'asc'
+							}
+						]
+					}
 				}
 			}
 		},
@@ -84,6 +101,44 @@ export const actions: Actions = {
 				mapper
 			}
 		});
+	},
+	editMapOrder: async ({ request, locals, params }) => {
+		if (!locals.connected) return fail(401);
+
+		const data = await request.formData();
+		const mapId = data.get('id')?.valueOf() as string | undefined;
+		const order = data.get('order')?.valueOf() as string | undefined;
+		if (mapId) {
+			const id = Number(mapId);
+			await prisma.map.update({
+				where: {
+					id,
+					campaignId: params.campaignId
+				},
+				data: {
+					order: Number(order)
+				}
+			});
+		}
+	},
+	editCategoryOrder: async ({ request, locals, params }) => {
+		if (!locals.connected) return fail(401);
+
+		const data = await request.formData();
+		const categoryId = data.get('id')?.valueOf() as string | undefined;
+		const order = data.get('order')?.valueOf() as string | undefined;
+		if (categoryId) {
+			const id = Number(categoryId);
+			await prisma.category.update({
+				where: {
+					id,
+					campaignId: params.campaignId
+				},
+				data: {
+					order: Number(order)
+				}
+			});
+		}
 	},
 	delete: async ({ locals, params }) => {
 		if (!locals.connected) return fail(401);
