@@ -71,12 +71,20 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		}
 	});
 
+	const moonBerries = await prisma.map.count({
+		where: {
+			campaignId: params.campaignId,
+			moonBerry: true
+		}
+	});
+
 	return {
 		campaign,
 		goldenedMaps,
 		clearedMaps,
 		fullClearedMaps,
 		totals,
+		moonBerries,
 		connected: locals.connected
 	};
 };

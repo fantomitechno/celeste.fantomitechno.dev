@@ -17,7 +17,7 @@
 
 	export let data: PageData;
 
-	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totals } = data;
+	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totals, moonBerries } = data;
 </script>
 
 <svelte:head>
@@ -63,10 +63,8 @@
 						: ghostBerry}
 					alt="A strawberry"
 				/>
-				Collected {totals._sum.berriesGotten} out of {totals._sum.berries} berrie{(totals._sum
-					.berries ?? 0) > 1
-					? 's'
-					: ''}
+				Collected {(totals._sum.berriesGotten ?? 0) + moonBerries + goldenedMaps} out of {totals
+					._sum.berries} berrie{(totals._sum.berries ?? 0) > 1 ? 's' : ''}
 			</span>
 			<span>
 				<img
