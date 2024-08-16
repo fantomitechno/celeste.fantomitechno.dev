@@ -6,15 +6,18 @@
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
 	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import time from '$lib/images/time.png';
+	import skullBlue from '$lib/images/skullBlue.png';
 
 	import Map from '$lib/components/Map.svelte';
 
 	import type { PageData } from './$types';
 	import Gamebanana from '$lib/components/Gamebanana.svelte';
+	import { fromTime } from '$lib/time';
 
 	export let data: PageData;
 
-	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totalBerries } = data;
+	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totals } = data;
 </script>
 
 <svelte:head>
@@ -54,14 +57,14 @@
 			</span>
 			<span>
 				<img
-					src={(totalBerries._sum.berries ?? 0) <= (totalBerries._sum.berriesGotten ?? 0) &&
-					totalBerries._sum.berriesGotten != 0
+					src={(totals._sum.berries ?? 0) <= (totals._sum.berriesGotten ?? 0) &&
+					totals._sum.berriesGotten != 0
 						? berry
 						: ghostBerry}
 					alt="A strawberry"
 				/>
-				Collected {totalBerries._sum.berriesGotten} out of {totalBerries._sum.berries} berrie{(totalBerries
-					._sum.berries ?? 0) > 1
+				Collected {totals._sum.berriesGotten} out of {totals._sum.berries} berrie{(totals._sum
+					.berries ?? 0) > 1
 					? 's'
 					: ''}
 			</span>
@@ -71,6 +74,14 @@
 					alt="A golden strawberry"
 				/>
 				Goldened {goldenedMaps} map{goldenedMaps > 1 ? 's' : ''}
+			</span>
+			<span>
+				<img src={time} alt="A Clock from Celeste" />
+				Time in the campaign: {fromTime(totals._sum.time)}
+			</span>
+			<span>
+				<img src={skullBlue} alt="A blue skull" />
+				Total deaths: {totals._sum.deaths}
 			</span>
 		</div>
 
@@ -201,7 +212,7 @@
 
 	span > img {
 		padding: 0 0.2em;
-		width: 2.5em;
+		width: 4em;
 		align-self: center;
 	}
 
@@ -209,7 +220,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		margin: 2em 0;
-		justify-content: space-around;
+		justify-content: space-evenly;
 	}
 
 	.stats span {
@@ -217,7 +228,7 @@
 		border-radius: 5px;
 		margin: 0.5em 0;
 		padding: 1em;
-		width: 25%;
+		width: 27%;
 		height: auto;
 
 		display: flex;

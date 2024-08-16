@@ -1,5 +1,6 @@
 <script lang="ts">
 	import berry from '$lib/images/Strawberry_idle.webp';
+	import moonBerry from '$lib/images/moonBerry.gif';
 	import ghostBerry from '$lib/images/ghostBerry.gif';
 	import gberry from '$lib/images/Goldberry_Idle.webp';
 	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
@@ -8,7 +9,7 @@
 	import ghostHeart from '$lib/images/GhostHeart.gif';
 	import flagCP from '$lib/images/FlagCP.gif';
 
-	import type { Campaign, Category, Map } from '@prisma/client';
+	import type { Campaign, Map } from '@prisma/client';
 
 	export let map: Map;
 	export let campaign: Campaign | null = null;
@@ -22,9 +23,12 @@
 		- by {campaign.mapper}
 	{/if}
 	<span>
-		{#if map.berries}
+		{#if map.berries || map.moonBerry}
 			<div>
-				<img src={map.berries <= map.berriesGotten ? berry : ghostBerry} alt="A strawberry" />
+				<img
+					src={map.moonBerry ? moonBerry : map.berries <= map.berriesGotten ? berry : ghostBerry}
+					alt="A strawberry"
+				/>
 				Got {map.berriesGotten} out of {map.berries}
 			</div>
 		{/if}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import berry from '$lib/images/Strawberry_idle.webp';
+	import moonBerry from '$lib/images/moonBerry.gif';
 	import ghostBerry from '$lib/images/ghostBerry.gif';
 	import gberry from '$lib/images/Goldberry_Idle.webp';
 	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
@@ -7,11 +8,17 @@
 	import yellowHeart from '$lib/images/YellowHeart.gif';
 	import ghostHeart from '$lib/images/GhostHeart.gif';
 	import flagCP from '$lib/images/FlagCP.gif';
+	import time from '$lib/images/time.png';
+	import fasttime from '$lib/images/fasttime.png';
+	import skullBlue from '$lib/images/skullBlue.png';
+	import skullGold from '$lib/images/skullGold.png';
 
 	import type { Campaign, Category } from '@prisma/client';
 	import type { PageData } from './$types';
 	import Search from '$lib/components/Search.svelte';
 	import Gamebanana from '$lib/components/Gamebanana.svelte';
+	import VideoEmbed from './VideoEmbed.svelte';
+	import { fromTime } from '$lib/time';
 
 	export let data: PageData;
 
@@ -78,13 +85,21 @@
 				/>
 				{map.clearedOn ? `Cleared the ${map.clearedOn.toDateString()}` : `Map still not cleared`}
 			</span>
-			{#if map.berriesGotten || map.berries}
+			{#if map.berriesGotten || map.berries || map.moonBerry}
 				<span>
 					<img
-						src={map.berries <= map.berriesGotten && map.berries != 0 ? berry : ghostBerry}
+						src={map.moonBerry
+							? moonBerry
+							: map.berries <= map.berriesGotten && map.berries != 0
+								? berry
+								: ghostBerry}
 						alt="A strawberry"
 					/>
 					Collected {map.berriesGotten} out of {map.berries} berrie{map.berries > 1 ? 's' : ''}
+					{#if map.moonBerry}
+						<br />
+						Collected Moon Berry
+					{/if}
 				</span>
 			{/if}
 			<span>
@@ -99,7 +114,31 @@
 					Golden berry still waiting for me
 				{/if}
 			</span>
+			<span>
+				<img src={time} alt="A Clock from Celeste" />
+				Time in the map: {fromTime(map.time)}
+			</span>
+			<span>
+				<img src={skullBlue} alt="A blue skull" />
+				Total deaths: {map.deaths}
+			</span>
+			{#if map.fastestClear}
+				<span>
+					<img src={fasttime} alt="A Clock from Celeste (edited to be orange)" />
+					Fastest clear: {fromTime(map.fastestClear)}
+				</span>
+			{/if}
+			{#if map.lowDeath}
+				<span>
+					<img src={skullGold} alt="A gold skull" />
+					Lowest death run: {map.lowDeath}
+				</span>
+			{/if}
 		</div>
+
+		{#if map.video}
+			<VideoEmbed video={map.video} />
+		{/if}
 
 		{#if data.connected}
 			<form action="?/edit" method="POST" id="edit">
@@ -110,42 +149,10 @@
 							<input name="name" type="text" value={map.name} required />
 						</label>
 						<label>
-							Berry count
-							<input name="berries" type="number" value={map.berries} />
-						</label>
-						<label>
-							Room count
-							<input name="rooms" type="number" value={map.numberOfRooms} />
+							Mapper
+							<input name="mapper" type="text" value={map.mapper} />
 						</label>
 					</div>
-					<div>
-						<label>
-							Golden PB
-							<input name="goldenPb" type="number" value={map.goldenPb} />
-						</label>
-						<label>
-							Berries collected
-							<input name="berriesCollected" type="number" value={map.berriesGotten} />
-						</label>
-						<label>
-							Cleared the
-							<input
-								name="cleared"
-								type="date"
-								value={map.clearedOn?.toISOString().split('T')[0]}
-							/>
-						</label>
-						<label>
-							Goldened the
-							<input
-								name="goldened"
-								type="date"
-								value={map.goldenedOn?.toISOString().split('T')[0]}
-							/>
-						</label>
-					</div>
-				</span>
-				<span class="metadata">
 					<div>
 						<label>
 							Search category
@@ -175,14 +182,7 @@
 									.map(([k, _]) => k)
 									.join(', ')}
 							{/if}
-						</label>
-						<label>
-							Mapper
-							<input name="mapper" type="text" value={map.mapper} />
-						</label>
-					</div>
-					<div>
-						<label>
+						</label><label>
 							Search campaign
 							<Search type="campaign" bind:results={filteredCampaign} />
 							{#if filteredCampaign.length != 0}
@@ -209,10 +209,87 @@
 									.join(', ')}
 							{/if}
 						</label>
+					</div>
+				</span>
+				<hr class="separator" />
+				<span>
+					<div>
+						<label>
+							Berry count
+							<input name="berries" type="number" value={map.berries} />
+						</label>
+						<label>
+							Berries collected
+							<input name="berriesCollected" type="number" value={map.berriesGotten} />
+						</label>
+						<label>
+							Moon Berry collected
+							<input name="moonBerry" type="checkbox" checked={map.moonBerry} />
+						</label>
+					</div>
+					<div>
+						<label>
+							Room count
+							<input name="rooms" type="number" value={map.numberOfRooms} />
+						</label>
+						<label>
+							Golden PB
+							<input name="goldenPb" type="number" value={map.goldenPb} />
+						</label>
+					</div>
+				</span>
+				<hr class="separator" />
+				<span>
+					<div>
+						<label>
+							Time passed
+							<input name="time" type="text" value={fromTime(map.time)} />
+						</label>
+						<label>
+							Total deaths
+							<input name="deaths" type="number" value={map.deaths} />
+						</label>
+						<label>
+							Cleared the
+							<input
+								name="cleared"
+								type="date"
+								value={map.clearedOn?.toISOString().split('T')[0]}
+							/>
+						</label>
+					</div>
+					<div>
+						<label>
+							Fast clear
+							<input name="fastClear" type="text" value={fromTime(map.fastestClear)} />
+						</label>
+						<label>
+							Lowest deaths
+							<input name="lowDeaths" type="number" value={map.lowDeath} />
+						</label>
+						<label>
+							Goldened the
+							<input
+								name="goldened"
+								type="date"
+								value={map.goldenedOn?.toISOString().split('T')[0]}
+							/>
+						</label>
+					</div>
+				</span>
 
+				<hr class="separator" />
+				<span>
+					<div>
 						<label>
 							Gamebana link
 							<input name="link" type="url" value={map.link} />
+						</label>
+					</div>
+					<div>
+						<label>
+							Video link
+							<input name="video" type="url" value={map.video} />
 						</label>
 					</div>
 				</span>
@@ -292,10 +369,12 @@
 		padding: 0;
 	}
 
-	.metadata {
-		margin-top: 1em;
-		border-top: 0.2em solid var(--color-primary);
-		padding-top: 1em;
+	.separator {
+		border: none;
+		background-color: var(--color-primary);
+		width: 100%;
+		height: 0.2em;
+		margin: 1em 0;
 	}
 
 	span > img {
@@ -308,7 +387,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		margin: 2em 0;
-		justify-content: space-around;
+		justify-content: space-evenly;
 	}
 
 	.stats span {

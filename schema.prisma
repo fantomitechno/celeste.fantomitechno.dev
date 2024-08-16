@@ -22,6 +22,7 @@ model Map {
   categoryId    Int?
   clearedOn     DateTime?
   goldenedOn    DateTime?
+  moonBerry     Boolean   @default(false)
   berriesGotten Int       @default(0)
   berries       Int       @default(0)
   goldenPb      Int?
@@ -29,6 +30,11 @@ model Map {
   link          String?
   order         Int       @default(0)
   mapper        String?
+  video         String?
+  time          Int       @default(0)
+  fastestClear  Int?
+  lowDeath      Int?
+  deaths        Int       @default(0)
 }
 
 model Campaign {

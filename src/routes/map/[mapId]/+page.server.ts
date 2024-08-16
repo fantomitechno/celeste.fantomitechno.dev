@@ -1,6 +1,7 @@
 import { prisma } from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { toTime } from '$lib/time';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const map = await prisma.map.findFirst({
@@ -37,6 +38,12 @@ export const actions: Actions = {
 		let campaignId = data.get('campaign')?.valueOf() as string | undefined;
 		const link = data.get('link')?.valueOf() as string | undefined;
 		const mapper = data.get('mapper')?.valueOf() as string | null;
+		const moonBerry = data.has('moonBerry');
+		const video = data.get('video')?.valueOf() as string | null;
+		const timeRaw = data.get('time')?.valueOf() as string | null;
+		const fastTimeRaw = data.get('fastClear')?.valueOf() as string | null;
+		const deathsRaw = data.get('deaths')?.valueOf() as string | null;
+		const lowDeaths = data.get('lowDeaths')?.valueOf() as string | null;
 
 		let clearedOn: Date | null = null;
 		if (cleared) {
@@ -61,6 +68,18 @@ export const actions: Actions = {
 		let goldenPb: undefined | number = undefined;
 		if (pbRoom) goldenPb = Number(pbRoom);
 
+		let time: undefined | number = undefined;
+		if (timeRaw) time = toTime(timeRaw);
+
+		let fastestClear: undefined | number = undefined;
+		if (fastTimeRaw) fastestClear = toTime(fastTimeRaw);
+
+		let lowDeath: undefined | number = undefined;
+		if (lowDeaths) lowDeath = Number(lowDeaths);
+
+		let deaths: undefined | number = undefined;
+		if (deathsRaw) deaths = Number(deathsRaw);
+
 		await prisma.map.update({
 			where: {
 				id: Number(params.mapId)
@@ -76,7 +95,13 @@ export const actions: Actions = {
 				link,
 				name,
 				goldenPb,
-				mapper
+				mapper,
+				moonBerry,
+				video,
+				time,
+				fastestClear,
+				lowDeath,
+				deaths
 			}
 		});
 	},

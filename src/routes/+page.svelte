@@ -25,10 +25,9 @@
 
 			<span id="stats">
 				<div>
-					Out of {data.totalBerries._sum.berries ?? 0} berr{(data.totalBerries._sum.berries ?? 0) >
-					1
+					Out of {data.totals._sum.berries ?? 0} berr{(data.totals._sum.berries ?? 0) > 1
 						? 'ies'
-						: 'y'}, I collected {data.totalBerries._sum.berriesGotten ?? 0}
+						: 'y'}, I collected {(data.totals._sum.berriesGotten ?? 0) + data.moonBerries}
 				</div>
 				<div>
 					I have registred {data.campaignMaps} map{data.campaignMaps > 1 ? 's' : ''} accross {data.campaigns}
@@ -48,6 +47,9 @@
 				<div>
 					I've cleared {data.clearedMaps} map{data.clearedMaps > 1 ? 's' : ''} and FCed {data.fullClearedMaps}
 					of them
+				</div>
+				<div>
+					I died {data.totals._sum.deaths ?? 0} times
 				</div>
 			</span>
 			<img id="golden" src={golden} alt="7C tree" />

@@ -7,10 +7,18 @@ export const load: PageServerLoad = async () => {
 
 	const standaloneMaps = await prisma.map.count({ where: { campaignId: null } });
 
-	const totalBerries = await prisma.map.aggregate({
+	const totals = await prisma.map.aggregate({
 		_sum: {
 			berriesGotten: true,
-			berries: true
+			berries: true,
+			deaths: true,
+			time: true
+		}
+	});
+
+	const moonBerries = await prisma.map.count({
+		where: {
+			moonBerry: true
 		}
 	});
 
@@ -28,10 +36,11 @@ export const load: PageServerLoad = async () => {
 		campaignMaps,
 		campaigns,
 		standaloneMaps,
-		totalBerries,
+		totals,
 		goldenBerries,
 		goldeningBerries,
 		clearedMaps,
-		fullClearedMaps
+		fullClearedMaps,
+		moonBerries
 	};
 };
