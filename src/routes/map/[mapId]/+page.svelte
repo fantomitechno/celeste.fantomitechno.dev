@@ -1,4 +1,13 @@
 <script lang="ts">
+	import berry from '$lib/images/Strawberry_idle.webp';
+	import ghostBerry from '$lib/images/ghostBerry.gif';
+	import gberry from '$lib/images/Goldberry_Idle.webp';
+	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
+	import redHeart from '$lib/images/RedHeart.gif';
+	import yellowHeart from '$lib/images/YellowHeart.gif';
+	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import flagCP from '$lib/images/FlagCP.gif';
+
 	import type { Campaign, Category } from '@prisma/client';
 	import type { PageData } from './$types';
 	import Search from '$lib/components/Search.svelte';
@@ -57,6 +66,40 @@
 				<Gamebanana link={map.Campaign.link} />
 			{/if}
 		</span>
+		<div class="stats">
+			<span>
+				<img
+					src={map.berries <= map.berriesGotten && map.goldenedOn
+						? yellowHeart
+						: map.clearedOn
+							? redHeart
+							: ghostHeart}
+					alt="A heart"
+				/>
+				{map.clearedOn ? `Cleared the ${map.clearedOn.toDateString()}` : `Map still not cleared`}
+			</span>
+			{#if map.berriesGotten || map.berries}
+				<span>
+					<img
+						src={map.berries <= map.berriesGotten && map.berries != 0 ? berry : ghostBerry}
+						alt="A strawberry"
+					/>
+					Collected {map.berriesGotten} out of {map.berries} berrie{map.berries > 1 ? 's' : ''}
+				</span>
+			{/if}
+			<span>
+				{#if map.goldenedOn}
+					<img src={gberry} alt="A golden strawberry" />
+					Golden berry collected {map.goldenedOn.toDateString()}
+				{:else if map.goldenPb && map.numberOfRooms}
+					<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
+					Reached room {map.goldenPb} out of {map.numberOfRooms}
+				{:else}
+					<img src={ghostGBerry} alt="A golden strawberry" />
+					Golden berry still waiting for me
+				{/if}
+			</span>
+		</div>
 
 		{#if data.connected}
 			<form action="?/edit" method="POST" id="edit">
@@ -253,5 +296,35 @@
 		margin-top: 1em;
 		border-top: 0.2em solid var(--color-primary);
 		padding-top: 1em;
+	}
+
+	span > img {
+		padding: 0 0.2em;
+		width: 4em;
+		align-self: center;
+	}
+
+	.stats {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 2em 0;
+		justify-content: space-around;
+	}
+
+	.stats span {
+		background-color: var(--color-primary);
+		border-radius: 5px;
+		margin: 0.5em 0;
+		padding: 1em;
+		width: 27%;
+		height: auto;
+
+		display: flex;
+		align-items: center;
+	}
+
+	#flag {
+		padding: 0 0.7em;
+		width: 3em;
 	}
 </style>

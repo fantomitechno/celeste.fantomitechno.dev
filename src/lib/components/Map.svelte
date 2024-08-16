@@ -6,6 +6,8 @@
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
 	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import flagCP from '$lib/images/FlagCP.gif';
+
 	import type { Campaign, Map } from '@prisma/client';
 
 	export let map: Map;
@@ -32,7 +34,7 @@
 					<img src={gberry} alt="A golden strawberry" />
 					Goldened on {map.goldenedOn.toDateString()}
 				{:else if map.goldenPb && map.numberOfRooms}
-					<img src={gberry} alt="A golden strawberry" />
+					<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
 					Reached room {map.goldenPb} out of {map.numberOfRooms}
 				{:else}
 					<img src={ghostGBerry} alt="A golden strawberry" />
@@ -90,5 +92,11 @@
 	a:hover {
 		text-decoration: none;
 		color: var(--color-text);
+	}
+
+	#flag {
+		padding-right: 0.6em;
+		padding-left: 0.4em;
+		width: 1.2em;
 	}
 </style>

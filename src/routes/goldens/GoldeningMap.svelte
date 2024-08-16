@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
+	import flagCP from '$lib/images/FlagCP.gif';
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
 	import type { Campaign, Category, Map } from '@prisma/client';
@@ -31,7 +31,7 @@
 	</hgroup>
 	<span>
 		<div>
-			<img src={ghostGBerry} alt="A golden strawberry" />
+			<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
 			Reached room {map.goldenPb} out of {map.numberOfRooms}
 		</div>
 
@@ -96,5 +96,11 @@
 		a:hover {
 			color: var(--color-secondary);
 		}
+	}
+
+	#flag {
+		padding-right: 0.45em;
+		padding-left: 0.25em;
+		width: 1.5em;
 	}
 </style>

@@ -11,6 +11,8 @@ export const GET: RequestHandler = async ({ request, cookies }) => {
 	const state = url.searchParams.get('state');
 	const code = url.searchParams.get('code');
 
+	if (url.searchParams.has('error')) return redirect(302, '/');
+
 	if (!state || !stateCookie || !code || stateCookie !== state) {
 		return error(400);
 	}
