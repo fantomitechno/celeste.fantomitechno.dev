@@ -62,6 +62,8 @@
 
 <style>
 	.map {
+		position: relative;
+		z-index: 1;
 		border: 0.2em solid var(--color-primary);
 		border-radius: 0.5em;
 		padding: 0.5em 1em 0.9em;

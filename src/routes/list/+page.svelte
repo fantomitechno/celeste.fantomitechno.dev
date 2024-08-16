@@ -23,8 +23,9 @@
 	<input type="text" placeholder="Search for map/campaign..." bind:value={searchValue} />
 	<ul>
 		{#each data.campaigns.filter((c) => !searchValue.length || c.categories.find((c) => c.name.search(new RegExp(searchValue, 'ig')) != -1) || c.maps.find((m) => m.name.search(new RegExp(searchValue, 'ig')) != -1) || c.name.search(new RegExp(searchValue, 'ig')) != -1) as campaign}
-			<a href={'/campaign/' + campaign.id}>
-				<li class="campaign">
+			<li class="campaign">
+				<a href={'/campaign/' + campaign.id}> <div class="overlay"></div></a>
+				<span>
 					<hgroup>
 						<h1>
 							{campaign.name}
@@ -51,8 +52,8 @@
 							{/each}
 						{/if}
 					</ul>
-				</li>
-			</a>
+				</span>
+			</li>
 		{/each}
 		{#each data.standaloneMaps.filter((m) => !m.categoryId && (!searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1)) as map}
 			<li>
@@ -69,7 +70,16 @@
 		color: var(--color-text);
 	}
 
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
 	.campaign {
+		position: relative;
 		border: 0.2em solid var(--color-primary);
 		border-radius: 1em;
 		padding: 0 1em;

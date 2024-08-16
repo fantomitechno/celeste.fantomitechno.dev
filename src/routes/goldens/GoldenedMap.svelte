@@ -7,43 +7,46 @@
 	export let map: Map & { Campaign: Campaign | null; Category: Category | null };
 </script>
 
-<a href={'/map/' + map.id} class="map">
-	<hgroup>
-		<h1>
-			{map.name}
-			{#if map.mapper}
-				- by {map.mapper}
-			{:else if map.Campaign?.mapper}
-				- by {map.Campaign.mapper}
-			{/if}
-		</h1>
-		{#if map.Campaign}
-			<h2>
-				<!-- svelte-ignore node_invalid_placement_ssr -->
-				Map from <a href={`/campaign/${map.Campaign.id}`}>{map.Campaign.name}</a>
-				{#if map.Category}
-					- <b style:color={map.Category.color}>{map.Category.name}</b>
-				{/if}
-			</h2>
-		{:else}
-			<h2>Standalone map</h2>
-		{/if}
-	</hgroup>
+<span class="map">
+	<a href={'/map/' + map.id}> <div class="overlay"></div></a>
 	<span>
-		<div>
-			<img src={gberry} alt="A golden strawberry" />
-			Goldened on {map.goldenedOn!.toDateString()}
-		</div>
+		<hgroup>
+			<h1>
+				{map.name}
+				{#if map.mapper}
+					- by {map.mapper}
+				{:else if map.Campaign?.mapper}
+					- by {map.Campaign.mapper}
+				{/if}
+			</h1>
+			{#if map.Campaign}
+				<h2>
+					Map from
+					<a class="campaign-link" href={`/campaign/${map.Campaign.id}`}>{map.Campaign.name}</a>
+					{#if map.Category}
+						- <b style:color={map.Category.color}>{map.Category.name}</b>
+					{/if}
+				</h2>
+			{:else}
+				<h2>Standalone map</h2>
+			{/if}
+		</hgroup>
+		<span>
+			<div>
+				<img src={gberry} alt="A golden strawberry" />
+				Goldened on {map.goldenedOn!.toDateString()}
+			</div>
 
-		<div>
-			<img
-				src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
-				alt="A heart"
-			/>
-			Cleared on {map.clearedOn?.toDateString()}
-		</div>
+			<div>
+				<img
+					src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
+					alt="A heart"
+				/>
+				Cleared on {map.clearedOn?.toDateString()}
+			</div>
+		</span>
 	</span>
-</a>
+</span>
 
 <style>
 	h1 {
@@ -51,7 +54,21 @@
 		background-image: linear-gradient(to right, var(--color-primary), var(--color-primary));
 	}
 
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.campaign-link {
+		position: relative;
+		z-index: 1;
+	}
+
 	.map {
+		position: relative;
 		border: 0.2em solid var(--color-primary);
 		border-radius: 0.5em;
 		padding: 0.5em 1em 0.9em;
@@ -69,7 +86,7 @@
 		margin-top: 1em;
 	}
 
-	div {
+	div:not(.overlay) {
 		padding-left: 0.2em;
 		display: flex;
 		align-items: center;
