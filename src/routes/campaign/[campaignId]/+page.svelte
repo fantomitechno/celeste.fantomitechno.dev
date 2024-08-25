@@ -1,13 +1,13 @@
 <script lang="ts">
-	import berry from '$lib/images/Strawberry_idle.webp';
-	import ghostBerry from '$lib/images/ghostBerry.gif';
-	import gberry from '$lib/images/Goldberry_Idle.webp';
-	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
-	import redHeart from '$lib/images/RedHeart.gif';
-	import yellowHeart from '$lib/images/YellowHeart.gif';
-	import ghostHeart from '$lib/images/GhostHeart.gif';
-	import time from '$lib/images/time.png';
-	import skullBlue from '$lib/images/skullBlue.png';
+	import berry from '$lib/images/berries/Strawberry_idle.webp';
+	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
+	import gberry from '$lib/images/berries/goldBerry.gif';
+	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
+	import dot from '$lib/images/journal/dot.png';
+	import clear from '$lib/images/journal/clear.png';
+	import fullclear from '$lib/images/journal/fullclear.png';
+	import time from '$lib/images/journal/time.png';
+	import skullBlue from '$lib/images/journal/skullBlue.png';
 
 	import Map from '$lib/components/Map.svelte';
 
@@ -17,7 +17,7 @@
 
 	export let data: PageData;
 
-	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totals, moonBerries } = data;
+	const { campaign, goldenedMaps, clearedMaps, fullClearedMaps, totals } = data;
 </script>
 
 <svelte:head>
@@ -46,11 +46,7 @@
 		<div class="stats">
 			<span>
 				<img
-					src={fullClearedMaps == clearedMaps
-						? yellowHeart
-						: clearedMaps == 0
-							? ghostHeart
-							: redHeart}
+					src={fullClearedMaps == clearedMaps ? fullclear : clearedMaps == 0 ? dot : clear}
 					alt="A heart"
 				/>
 				Cleared {clearedMaps} map{clearedMaps > 1 ? 's' : ''} out of {campaign.maps.length}
@@ -63,8 +59,10 @@
 						: ghostBerry}
 					alt="A strawberry"
 				/>
-				Collected {(totals._sum.collectedberries ?? 0) + moonBerries + goldenedMaps} out of {totals
-					._sum.containsBerries} berrie{(totals._sum.containsBerries ?? 0) > 1 ? 's' : ''}
+				Collected {totals._sum.collectedberries ?? 0} out of {totals._sum.containsBerries} berrie{(totals
+					._sum.containsBerries ?? 0) > 1
+					? 's'
+					: ''}
 			</span>
 			<span>
 				<img

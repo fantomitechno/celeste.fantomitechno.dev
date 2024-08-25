@@ -1,12 +1,12 @@
 <script lang="ts">
-	import berry from '$lib/images/Strawberry_idle.webp';
-	import moonBerry from '$lib/images/moonBerry.gif';
-	import ghostBerry from '$lib/images/ghostBerry.gif';
-	import gberry from '$lib/images/Goldberry_Idle.webp';
-	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
-	import redHeart from '$lib/images/RedHeart.gif';
-	import yellowHeart from '$lib/images/YellowHeart.gif';
-	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import berry from '$lib/images/berries/Strawberry_idle.webp';
+	import moonBerry from '$lib/images/berries/moonBerry.gif';
+	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
+	import gberry from '$lib/images/berries/goldBerry.gif';
+	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
+	import dot from '$lib/images/journal/dot.png';
+	import clear from '$lib/images/journal/clear.png';
+	import fullclear from '$lib/images/journal/fullclear.png';
 	import flagCP from '$lib/images/FlagCP.gif';
 
 	import type { Campaign, Map } from '@prisma/client';
@@ -52,10 +52,10 @@
 
 		<div>
 			{#if map.clearedOn}
-				<img src={isFullCleared(map) ? yellowHeart : redHeart} alt="A heart" />
+				<img src={isFullCleared(map) ? fullclear : clear} alt="A flag" />
 				Cleared on {map.clearedOn.toDateString()}
 			{:else}
-				<img src={ghostHeart} alt="A heart" />
+				<img src={dot} alt="A dot" />
 				Still haven't cleared
 			{/if}
 		</div>

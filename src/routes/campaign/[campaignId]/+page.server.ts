@@ -1,6 +1,7 @@
 import { prisma } from '$lib/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { isFullCleared } from '$lib/clear';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const campaign = await prisma.campaign.findFirst({
@@ -52,12 +53,16 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		}
 	});
 
-	const fullClearedMaps = await prisma.map.count({
+	const maps = await prisma.map.findMany({
 		where: {
-			campaignId: params.campaignId,
-			containsBerries: { equals: prisma.map.fields.collectedberries, not: 0 }
+			campaignId: params.campaignId
 		}
 	});
+
+	let fullClearedMaps = 0;
+	for (const map of maps) {
+		if (isFullCleared(map)) fullClearedMaps += 1;
+	}
 
 	const totals = await prisma.map.aggregate({
 		where: {
@@ -70,21 +75,12 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			time: true
 		}
 	});
-
-	const moonBerries = await prisma.map.count({
-		where: {
-			campaignId: params.campaignId,
-			collectedMoonBerry: true
-		}
-	});
-
 	return {
 		campaign,
 		goldenedMaps,
 		clearedMaps,
 		fullClearedMaps,
 		totals,
-		moonBerries,
 		connected: locals.connected
 	};
 };

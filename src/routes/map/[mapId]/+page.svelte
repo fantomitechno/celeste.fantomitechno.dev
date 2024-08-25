@@ -1,20 +1,24 @@
 <script lang="ts">
-	import berry from '$lib/images/Strawberry_idle.webp';
-	import moonBerry from '$lib/images/moonBerry.gif';
-	import ghostBerry from '$lib/images/ghostBerry.gif';
-	import gberry from '$lib/images/Goldberry_Idle.webp';
-	import ghostGBerry from '$lib/images/ghostGoldBerry.gif';
-	import redHeart from '$lib/images/RedHeart.gif';
-	import yellowHeart from '$lib/images/YellowHeart.gif';
-	import ghostHeart from '$lib/images/GhostHeart.gif';
+	import berry from '$lib/images/berries/Strawberry_idle.webp';
+	import moonBerry from '$lib/images/berries/moonBerry.gif';
+	import ghostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
+	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
+	import gberry from '$lib/images/berries/goldBerry.gif';
+	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
+	import dot from '$lib/images/journal/dot.png';
+	import clear from '$lib/images/journal/clear.png';
+	import fullclear from '$lib/images/journal/fullclear.png';
 	import flagCP from '$lib/images/FlagCP.gif';
-	import time from '$lib/images/time.png';
-	import fasttime from '$lib/images/fasttime.png';
-	import skullBlue from '$lib/images/skullBlue.png';
-	import skullGold from '$lib/images/skullGold.png';
+	import time from '$lib/images/journal/time.png';
+	import fasttime from '$lib/images/journal/fasttime.png';
+	import skullBlue from '$lib/images/journal/skullBlue.png';
+	import skullGold from '$lib/images/journal/skullGold.png';
+	import cassette from '$lib/images/cassette.gif';
+	import cassetteGhost from '$lib/images/cassetteGhost.gif';
 
-	import type { Campaign, Category } from '@prisma/client';
+	import { DeathlessBerry, HeartType, type Campaign, type Category } from '@prisma/client';
 	import type { PageData } from './$types';
+
 	import Search from '$lib/components/Search.svelte';
 	import Gamebanana from '$lib/components/Gamebanana.svelte';
 	import VideoEmbed from './VideoEmbed.svelte';
@@ -34,6 +38,29 @@
 	if (map?.Campaign) {
 		checkedCampaign[map.Campaign.name] = true;
 		if (map?.Category) checkedCategory[`${map.Category.name} - ${map.Campaign.name}`] = true;
+	}
+
+	let deathlessBerry: string = '';
+	let deathlessGhostBerry: string = '';
+	let deathlessBerryName: string = '';
+	switch (map?.deathlessType) {
+		case DeathlessBerry.GOLDEN:
+			deathlessBerry = gberry;
+			deathlessGhostBerry = ghostGBerry;
+			deathlessBerryName = 'Golden';
+			break;
+
+		default:
+			break;
+	}
+
+	let heart: string = '';
+	let heartGhost: string = '';
+	switch (map?.heartType) {
+		case HeartType.BLUE:
+			break;
+		default:
+			break;
 	}
 </script>
 
@@ -76,20 +103,13 @@
 		</span>
 		<div class="stats">
 			<span>
-				<img
-					src={isFullCleared(map) ? yellowHeart : map.clearedOn ? redHeart : ghostHeart}
-					alt="A heart"
-				/>
+				<img src={isFullCleared(map) ? fullclear : map.clearedOn ? clear : dot} alt="A flag" />
 				{map.clearedOn ? `Cleared the ${map.clearedOn.toDateString()}` : `Map still not cleared`}
 			</span>
-			{#if map.containsBerries || map.collectedMoonBerry}
+			{#if map.containsBerries}
 				<span>
 					<img
-						src={map.collectedMoonBerry
-							? moonBerry
-							: map.containsBerries <= map.collectedberries
-								? berry
-								: ghostBerry}
+						src={map.containsBerries <= map.collectedberries ? berry : ghostBerry}
 						alt="A strawberry"
 					/>
 					Collected {map.collectedberries} out of {map.containsBerries} berrie{map.containsBerries >
@@ -102,16 +122,27 @@
 					{/if}
 				</span>
 			{/if}
+			<span id="collectibles">
+				{#if map.containsCassette}
+					<img src={map.collectedCassette ? cassette : cassetteGhost} alt="A cassette" />
+				{/if}
+				{#if map.containsHeart}
+					<img src={map.collectedHeart ? cassette : cassetteGhost} alt="A cassette" />
+				{/if}
+				{#if map.containsMoonBerry}
+					<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
+				{/if}
+			</span>
 			<span>
 				{#if map.deathlessOn}
-					<img src={gberry} alt="A golden strawberry" />
-					Golden berry collected {map.deathlessOn.toDateString()}
+					<img src={deathlessBerry} alt={`A ${deathlessBerryName} strawberry`} />
+					{deathlessBerryName} berry collected {map.deathlessOn.toDateString()}
 				{:else if map.deathlessPb && map.numberOfRooms}
 					<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
 					Reached room {map.deathlessPb} out of {map.numberOfRooms}
 				{:else}
-					<img src={ghostGBerry} alt="A golden strawberry" />
-					Golden berry still waiting for me
+					<img src={deathlessGhostBerry} alt={`A ${deathlessBerryName} strawberry`} />
+					{deathlessBerryName} berry still waiting for me
 				{/if}
 			</span>
 			<span>
@@ -223,10 +254,40 @@
 							Berries collected
 							<input name="collectedberries" type="number" value={map.collectedberries} />
 						</label>
-						<label>
-							Moon Berry collected
-							<input name="collectedMoonBerry" type="checkbox" checked={map.collectedMoonBerry} />
-						</label>
+						<span>
+							<div>
+								<label>
+									<input name="containsMoonBerry" type="checkbox" checked={map.containsMoonBerry} />
+									Contains Moon Berry
+								</label>
+								<label>
+									<input name="containsCassette" type="checkbox" checked={map.containsCassette} />
+									Contains Cassette
+								</label>
+								<label>
+									<input name="containsHeart" type="checkbox" checked={map.containsHeart} />
+									Contains Heart
+								</label>
+							</div>
+							<div>
+								<label>
+									<input
+										name="collectedMoonBerry"
+										type="checkbox"
+										checked={map.collectedMoonBerry}
+									/>
+									Moon Berry collected
+								</label>
+								<label>
+									<input name="collectedCassette" type="checkbox" checked={map.collectedCassette} />
+									Collected Cassette
+								</label>
+								<label>
+									<input name="collectedHeart" type="checkbox" checked={map.collectedHeart} />
+									Collected Heart
+								</label>
+							</div>
+						</span>
 					</div>
 					<div>
 						<label>
@@ -405,6 +466,10 @@
 
 		display: flex;
 		align-items: center;
+	}
+
+	#collectibles {
+		justify-content: space-evenly;
 	}
 
 	#flag {

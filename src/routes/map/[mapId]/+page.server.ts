@@ -28,82 +28,102 @@ export const actions: Actions = {
 		if (!name) return fail(400);
 
 		let campaignId = data.get('campaign')?.valueOf() as string | undefined;
+
 		const category = data.get('category')?.valueOf() as string | undefined;
+		let categoryId: undefined | number = undefined;
+		if (category) categoryId = Number(category);
+
 		const link = data.get('link')?.valueOf() as string | undefined;
 		const mapper = data.get('mapper')?.valueOf() as string | null;
 		const video = data.get('video')?.valueOf() as string | null;
 
 		// Date informations
 		const cleared = data.get('cleared')?.valueOf() as string | undefined;
-		const deathless = data.get('deathlessOn')?.valueOf() as string | undefined;
-
-		const collectedberriesCount = data.get('collectedberries')?.valueOf() as string | undefined;
-		const pbRoom = data.get('deathlessPb')?.valueOf() as string | undefined;
-		const containsBerriesCount = data.get('containsBerries')?.valueOf() as string | undefined;
-		const roomCount = data.get('numberOfRooms')?.valueOf() as string | undefined;
-		const collectedMoonBerry = data.has('collectedMoonBerry');
-		const timeRaw = data.get('time')?.valueOf() as string | null;
-		const fastTimeRaw = data.get('fastClear')?.valueOf() as string | null;
-		const deathsRaw = data.get('deaths')?.valueOf() as string | null;
-		const lowDeathsPb = data.get('lowDeaths')?.valueOf() as string | null;
-
 		let clearedOn: Date | null = null;
 		if (cleared) {
 			clearedOn = new Date(Date.parse(cleared));
 		}
 
+		const deathless = data.get('deathlessOn')?.valueOf() as string | undefined;
 		let deathlessOn: Date | null = null;
 		if (deathless) deathlessOn = new Date(Date.parse(deathless));
 
+		// Collected infos
+		const collectedberriesCount = data.get('collectedberries')?.valueOf() as string | undefined;
 		let collectedberries: number | undefined = undefined;
 		if (collectedberriesCount) collectedberries = Number(collectedberriesCount);
 
+		const collectedMoonBerry = data.has('collectedMoonBerry');
+		const collectedHeart = data.has('collectedHeart');
+		const collectedCassette = data.has('collectedCassette');
+
+		// Collectibles infos
+		const containsBerriesCount = data.get('containsBerries')?.valueOf() as string | undefined;
 		let containsBerries: number | undefined = undefined;
 		if (containsBerriesCount) containsBerries = Number(containsBerriesCount);
 
-		let numberOfRooms: number | undefined = undefined;
-		if (roomCount) numberOfRooms = Number(roomCount);
+		const containsMoonBerry = data.has('containsMoonBerry') || collectedMoonBerry;
+		const containsHeart = data.has('containsHeart') || collectedHeart;
+		const containsCassette = data.has('containsCassette') || collectedCassette;
 
-		let categoryId: undefined | number = undefined;
-		if (category) categoryId = Number(category);
-
+		// Deathless informations
+		const pbRoom = data.get('deathlessPb')?.valueOf() as string | undefined;
 		let deathlessPb: undefined | number = undefined;
 		if (pbRoom) deathlessPb = Number(pbRoom);
 
+		const roomCount = data.get('numberOfRooms')?.valueOf() as string | undefined;
+		let numberOfRooms: number | undefined = undefined;
+		if (roomCount) numberOfRooms = Number(roomCount);
+
+		// Stats
+		const timeRaw = data.get('time')?.valueOf() as string | null;
 		let time: undefined | number = undefined;
 		if (timeRaw) time = toTime(timeRaw);
 
+		const deathsRaw = data.get('deaths')?.valueOf() as string | null;
+		let deaths: undefined | number = undefined;
+		if (deathsRaw) deaths = Number(deathsRaw);
+
+		const fastTimeRaw = data.get('fastClear')?.valueOf() as string | null;
 		let fastestClear: undefined | number = undefined;
 		if (fastTimeRaw) fastestClear = toTime(fastTimeRaw);
 
+		const lowDeathsPb = data.get('lowDeaths')?.valueOf() as string | null;
 		let lowDeaths: undefined | number = undefined;
 		if (lowDeathsPb) lowDeaths = Number(lowDeathsPb);
-
-		let deaths: undefined | number = undefined;
-		if (deathsRaw) deaths = Number(deathsRaw);
 
 		await prisma.map.update({
 			where: {
 				id: Number(params.mapId)
 			},
 			data: {
-				deathlessOn,
-				clearedOn,
-				collectedberries,
-				containsBerries,
+				name,
 				campaignId,
 				categoryId,
-				numberOfRooms,
 				link,
-				name,
-				deathlessPb,
 				mapper,
-				collectedMoonBerry,
 				video,
+
+				clearedOn,
+				deathlessOn,
+
+				containsMoonBerry,
+				containsCassette,
+				containsHeart,
+				containsBerries,
+
+				collectedMoonBerry,
+				collectedCassette,
+				collectedHeart,
+				collectedberries,
+
+				deathlessPb,
+				numberOfRooms,
+
 				time,
+				deaths,
 				fastestClear,
-				lowDeaths,
-				deaths
+				lowDeaths
 			}
 		});
 	},

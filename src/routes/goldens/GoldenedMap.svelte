@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { isFullCleared } from '$lib/clear';
-	import gberry from '$lib/images/Goldberry_Idle.webp';
-	import redHeart from '$lib/images/RedHeart.gif';
-	import yellowHeart from '$lib/images/YellowHeart.gif';
+	import gberry from '$lib/images/berries/goldBerry.gif';
+	import clear from '$lib/images/journal/clear.png';
+	import fullclear from '$lib/images/journal/fullclear.png';
 	import type { Campaign, Category, Map } from '@prisma/client';
 
 	export let map: Map & { Campaign: Campaign | null; Category: Category | null };
@@ -39,7 +39,7 @@
 			</div>
 
 			<div>
-				<img src={isFullCleared(map) ? yellowHeart : redHeart} alt="A heart" />
+				<img src={isFullCleared(map) ? fullclear : clear} alt="A little flag" />
 				Cleared on {map.clearedOn?.toDateString()}
 			</div>
 		</span>

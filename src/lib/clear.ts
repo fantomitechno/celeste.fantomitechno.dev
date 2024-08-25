@@ -7,7 +7,7 @@ export const isFullCleared = (map: Map) => {
 	const heartCleared = !map.containsHeart || map.collectedHeart;
 	const moonBerryCleared = !map.containsMoonBerry || map.collectedMoonBerry;
 
-	return berryCleared && cassetteCleared && heartCleared && moonBerryCleared;
+	return berryCleared && cassetteCleared && heartCleared && moonBerryCleared && map.clearedOn;
 };
 
 export const isRainbowCleared = async (category: Category) => {

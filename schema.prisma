@@ -28,6 +28,7 @@ model Map {
   containsMoonBerry Boolean @default(false)
   containsCassette  Boolean @default(false)
   containsHeart     Boolean @default(false)
+  heartType HeartType @default(BLUE)
   containsBerries   Int     @default(0)
 
   // Collected infos
@@ -52,6 +53,19 @@ enum DeathlessBerry {
   GOLDEN
   SILVER
   PLATINUM
+}
+
+enum HeartType {
+  BLUE
+  RED
+  YELLOW
+  ORANGE
+  PURPLE
+  COLLAB_BLUE
+  COLLAB_RED
+  COLLAB_YELLOW
+  COLLAB_ORANGE
+  COLLAB_PURPLE
 }
 
 model Campaign {
