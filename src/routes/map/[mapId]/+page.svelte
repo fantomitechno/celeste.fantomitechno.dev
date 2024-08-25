@@ -19,6 +19,7 @@
 	import Gamebanana from '$lib/components/Gamebanana.svelte';
 	import VideoEmbed from './VideoEmbed.svelte';
 	import { fromTime } from '$lib/time';
+	import { isFullCleared } from '$lib/clear';
 
 	export let data: PageData;
 
@@ -76,39 +77,38 @@
 		<div class="stats">
 			<span>
 				<img
-					src={map.berries <= map.berriesGotten && map.goldenedOn
-						? yellowHeart
-						: map.clearedOn
-							? redHeart
-							: ghostHeart}
+					src={isFullCleared(map) ? yellowHeart : map.clearedOn ? redHeart : ghostHeart}
 					alt="A heart"
 				/>
 				{map.clearedOn ? `Cleared the ${map.clearedOn.toDateString()}` : `Map still not cleared`}
 			</span>
-			{#if map.berriesGotten || map.berries || map.moonBerry}
+			{#if map.containsBerries || map.collectedMoonBerry}
 				<span>
 					<img
-						src={map.moonBerry
+						src={map.collectedMoonBerry
 							? moonBerry
-							: map.berries <= map.berriesGotten && map.berries != 0
+							: map.containsBerries <= map.collectedberries
 								? berry
 								: ghostBerry}
 						alt="A strawberry"
 					/>
-					Collected {map.berriesGotten} out of {map.berries} berrie{map.berries > 1 ? 's' : ''}
-					{#if map.moonBerry}
+					Collected {map.collectedberries} out of {map.containsBerries} berrie{map.containsBerries >
+					1
+						? 's'
+						: ''}
+					{#if map.collectedMoonBerry}
 						<br />
 						Collected Moon Berry
 					{/if}
 				</span>
 			{/if}
 			<span>
-				{#if map.goldenedOn}
+				{#if map.deathlessOn}
 					<img src={gberry} alt="A golden strawberry" />
-					Golden berry collected {map.goldenedOn.toDateString()}
-				{:else if map.goldenPb && map.numberOfRooms}
+					Golden berry collected {map.deathlessOn.toDateString()}
+				{:else if map.deathlessPb && map.numberOfRooms}
 					<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
-					Reached room {map.goldenPb} out of {map.numberOfRooms}
+					Reached room {map.deathlessPb} out of {map.numberOfRooms}
 				{:else}
 					<img src={ghostGBerry} alt="A golden strawberry" />
 					Golden berry still waiting for me
@@ -216,15 +216,15 @@
 					<div>
 						<label>
 							Berry count
-							<input name="berries" type="number" value={map.berries} />
+							<input name="berries" type="number" value={map.containsBerries} />
 						</label>
 						<label>
 							Berries collected
-							<input name="berriesCollected" type="number" value={map.berriesGotten} />
+							<input name="berriesCollected" type="number" value={map.collectedberries} />
 						</label>
 						<label>
 							Moon Berry collected
-							<input name="moonBerry" type="checkbox" checked={map.moonBerry} />
+							<input name="moonBerry" type="checkbox" checked={map.collectedMoonBerry} />
 						</label>
 					</div>
 					<div>
@@ -234,7 +234,7 @@
 						</label>
 						<label>
 							Golden PB
-							<input name="goldenPb" type="number" value={map.goldenPb} />
+							<input name="goldenPb" type="number" value={map.deathlessPb} />
 						</label>
 					</div>
 				</span>
@@ -272,7 +272,7 @@
 							<input
 								name="goldened"
 								type="date"
-								value={map.goldenedOn?.toISOString().split('T')[0]}
+								value={map.deathlessOn?.toISOString().split('T')[0]}
 							/>
 						</label>
 					</div>

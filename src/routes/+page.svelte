@@ -25,9 +25,10 @@
 
 			<span id="stats">
 				<div>
-					Out of {data.totals._sum.berries ?? 0} berr{(data.totals._sum.berries ?? 0) > 1
+					Out of {data.totals._sum.containsBerries ?? 0} berr{(data.totals._sum.containsBerries ??
+						0) > 1
 						? 'ies'
-						: 'y'}, I collected {(data.totals._sum.berriesGotten ?? 0) + data.moonBerries}
+						: 'y'}, I collected {(data.totals._sum.collectedberries ?? 0) + data.moonBerries}
 				</div>
 				<div>
 					I have registred {data.campaignMaps} map{data.campaignMaps > 1 ? 's' : ''} accross {data.campaigns}

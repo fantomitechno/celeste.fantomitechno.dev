@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isFullCleared } from '$lib/clear';
 	import flagCP from '$lib/images/FlagCP.gif';
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
@@ -35,14 +36,11 @@
 		<span>
 			<div>
 				<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
-				Reached room {map.goldenPb} out of {map.numberOfRooms}
+				Reached room {map.deathlessPb} out of {map.numberOfRooms}
 			</div>
 
 			<div>
-				<img
-					src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
-					alt="A heart"
-				/>
+				<img src={isFullCleared(map) ? yellowHeart : redHeart} alt="A heart" />
 				Cleared on {map.clearedOn?.toDateString()}
 			</div>
 		</span>

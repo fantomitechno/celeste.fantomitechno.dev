@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isFullCleared } from '$lib/clear';
 	import gberry from '$lib/images/Goldberry_Idle.webp';
 	import redHeart from '$lib/images/RedHeart.gif';
 	import yellowHeart from '$lib/images/YellowHeart.gif';
@@ -34,14 +35,11 @@
 		<span>
 			<div>
 				<img src={gberry} alt="A golden strawberry" />
-				Goldened on {map.goldenedOn!.toDateString()}
+				Goldened on {map.deathlessOn!.toDateString()}
 			</div>
 
 			<div>
-				<img
-					src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
-					alt="A heart"
-				/>
+				<img src={isFullCleared(map) ? yellowHeart : redHeart} alt="A heart" />
 				Cleared on {map.clearedOn?.toDateString()}
 			</div>
 		</span>

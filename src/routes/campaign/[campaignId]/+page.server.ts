@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const goldenedMaps = await prisma.map.count({
 		where: {
 			campaignId: params.campaignId,
-			goldenedOn: {
+			deathlessOn: {
 				not: null
 			}
 		}
@@ -55,7 +55,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const fullClearedMaps = await prisma.map.count({
 		where: {
 			campaignId: params.campaignId,
-			berries: { equals: prisma.map.fields.berriesGotten, not: 0 }
+			containsBerries: { equals: prisma.map.fields.collectedberries, not: 0 }
 		}
 	});
 
@@ -64,8 +64,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			campaignId: params.campaignId
 		},
 		_sum: {
-			berriesGotten: true,
-			berries: true,
+			containsBerries: true,
+			collectedberries: true,
 			deaths: true,
 			time: true
 		}
@@ -74,7 +74,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const moonBerries = await prisma.map.count({
 		where: {
 			campaignId: params.campaignId,
-			moonBerry: true
+			collectedMoonBerry: true
 		}
 	});
 

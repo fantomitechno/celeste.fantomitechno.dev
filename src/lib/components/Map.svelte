@@ -10,6 +10,7 @@
 	import flagCP from '$lib/images/FlagCP.gif';
 
 	import type { Campaign, Map } from '@prisma/client';
+	import { isFullCleared } from '$lib/clear';
 
 	export let map: Map;
 	export let campaign: Campaign | null = null;
@@ -23,22 +24,26 @@
 		- by {campaign.mapper}
 	{/if}
 	<span>
-		{#if map.berries || map.moonBerry}
+		{#if map.containsBerries || map.collectedMoonBerry}
 			<div>
 				<img
-					src={map.moonBerry ? moonBerry : map.berries <= map.berriesGotten ? berry : ghostBerry}
+					src={map.collectedMoonBerry
+						? moonBerry
+						: map.containsBerries <= map.collectedberries
+							? berry
+							: ghostBerry}
 					alt="A strawberry"
 				/>
-				Got {map.berriesGotten} out of {map.berries}
+				Got {map.collectedberries} out of {map.containsBerries}
 			</div>
 		{/if}
 		<div>
-			{#if map.goldenedOn}
+			{#if map.deathlessOn}
 				<img src={gberry} alt="A golden strawberry" />
-				Goldened on {map.goldenedOn.toDateString()}
-			{:else if map.goldenPb && map.numberOfRooms}
+				Goldened on {map.deathlessOn.toDateString()}
+			{:else if map.deathlessPb && map.numberOfRooms}
 				<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
-				Reached room {map.goldenPb} out of {map.numberOfRooms}
+				Reached room {map.deathlessPb} out of {map.numberOfRooms}
 			{:else}
 				<img src={ghostGBerry} alt="A golden strawberry" />
 				Still haven't tried goldening
@@ -47,10 +52,7 @@
 
 		<div>
 			{#if map.clearedOn}
-				<img
-					src={map.berries <= map.berriesGotten && map.berriesGotten != 0 ? yellowHeart : redHeart}
-					alt="A heart"
-				/>
+				<img src={isFullCleared(map) ? yellowHeart : redHeart} alt="A heart" />
 				Cleared on {map.clearedOn.toDateString()}
 			{:else}
 				<img src={ghostHeart} alt="A heart" />

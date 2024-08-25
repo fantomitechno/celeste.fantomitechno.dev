@@ -57,14 +57,14 @@
 			</span>
 			<span>
 				<img
-					src={(totals._sum.berries ?? 0) <= (totals._sum.berriesGotten ?? 0) &&
-					totals._sum.berriesGotten != 0
+					src={(totals._sum.containsBerries ?? 0) <= (totals._sum.collectedberries ?? 0) &&
+					totals._sum.collectedberries != 0
 						? berry
 						: ghostBerry}
 					alt="A strawberry"
 				/>
-				Collected {(totals._sum.berriesGotten ?? 0) + moonBerries + goldenedMaps} out of {totals
-					._sum.berries} berrie{(totals._sum.berries ?? 0) > 1 ? 's' : ''}
+				Collected {(totals._sum.collectedberries ?? 0) + moonBerries + goldenedMaps} out of {totals
+					._sum.containsBerries} berrie{(totals._sum.containsBerries ?? 0) > 1 ? 's' : ''}
 			</span>
 			<span>
 				<img

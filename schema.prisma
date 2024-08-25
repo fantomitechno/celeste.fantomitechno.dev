@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,39 +8,66 @@ datasource db {
 }
 
 model Map {
-  id            Int       @id @default(autoincrement())
-  name          String
-  Campaign      Campaign? @relation(fields: [campaignId], references: [id])
-  Category      Category? @relation(fields: [categoryId], references: [id])
-  campaignId    String?
-  categoryId    Int?
-  clearedOn     DateTime?
-  goldenedOn    DateTime?
-  moonBerry     Boolean   @default(false)
-  berriesGotten Int       @default(0)
-  berries       Int       @default(0)
-  goldenPb      Int?
+  // Metadata
+  id         Int       @id @default(autoincrement())
+  name       String
+  Campaign   Campaign? @relation(fields: [campaignId], references: [id])
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  campaignId String?
+  categoryId Int?
+  link       String?
+  order      Int       @default(0)
+  mapper     String?
+  video      String?
+
+  // Date informations
+  clearedOn   DateTime?
+  deathlessOn DateTime?
+
+  // Collectibles infos
+  containsMoonBerry Boolean @default(false)
+  containsCassette  Boolean @default(false)
+  containsHeart     Boolean @default(false)
+  containsBerries   Int     @default(0)
+
+  // Collected infos
+  collectedMoonBerry Boolean @default(false)
+  collectedberries   Int     @default(0)
+  collectedCassette  Boolean @default(false)
+  collectedHeart     Boolean @default(false)
+
+  // Deathless informations
+  deathlessType DeathlessBerry @default(GOLDEN)
+  deathlessPb   Int?
   numberOfRooms Int?
-  link          String?
-  order         Int       @default(0)
-  mapper        String?
-  video         String?
-  time          Int       @default(0)
-  fastestClear  Int?
-  lowDeath      Int?
-  deaths        Int       @default(0)
+
+  // Stats
+  time         Int  @default(0)
+  deaths       Int  @default(0)
+  fastestClear Int?
+  lowDeath     Int?
+}
+
+enum DeathlessBerry {
+  GOLDEN
+  SILVER
+  PLATINUM
 }
 
 model Campaign {
-  id         String     @id
-  name       String
+  // Metadata
+  id     String  @id
+  name   String
+  link   String?
+  mapper String?
+
+  // Maps infos
   maps       Map[]
   categories Category[]
-  link       String?
-  mapper     String?
 }
 
 model Category {
+  // Metadata
   id         Int      @id @default(autoincrement())
   name       String
   color      String   @default("#ffffff")
@@ -54,4 +75,7 @@ model Category {
   campaignId String
   maps       Map[]
   order      Int      @default(0)
+
+  // Rainbow
+  containsRainbow Boolean @default(false)
 }

@@ -9,8 +9,8 @@ export const load: PageServerLoad = async () => {
 
 	const totals = await prisma.map.aggregate({
 		_sum: {
-			berriesGotten: true,
-			berries: true,
+			collectedberries: true,
+			containsBerries: true,
 			deaths: true,
 			time: true
 		}
@@ -18,18 +18,18 @@ export const load: PageServerLoad = async () => {
 
 	const moonBerries = await prisma.map.count({
 		where: {
-			moonBerry: true
+			collectedMoonBerry: true
 		}
 	});
 
-	const goldenBerries = await prisma.map.count({ where: { goldenedOn: { not: null } } });
+	const goldenBerries = await prisma.map.count({ where: { deathlessOn: { not: null } } });
 	const goldeningBerries = await prisma.map.count({
-		where: { goldenPb: { not: null }, numberOfRooms: { not: null } }
+		where: { deathlessOn: { not: null }, numberOfRooms: { not: null } }
 	});
 	const clearedMaps = await prisma.map.count({ where: { clearedOn: { not: null } } });
 
 	const fullClearedMaps = await prisma.map.count({
-		where: { berries: { equals: prisma.map.fields.berriesGotten, not: 0 } }
+		where: { containsBerries: { equals: prisma.map.fields.collectedberries, not: 0 } }
 	});
 
 	return {

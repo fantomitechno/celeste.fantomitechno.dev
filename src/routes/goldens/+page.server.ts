@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async () => {
 	const goldens = await prisma.map.findMany({
 		where: {
-			goldenedOn: {
+			deathlessOn: {
 				not: null
 			}
 		},
@@ -14,20 +14,20 @@ export const load: PageServerLoad = async () => {
 		},
 		orderBy: [
 			{
-				goldenedOn: 'desc'
+				deathlessOn: 'desc'
 			}
 		]
 	});
 
 	const goldening = await prisma.map.findMany({
 		where: {
-			goldenPb: {
+			deathlessPb: {
 				not: null
 			},
 			numberOfRooms: {
 				not: null
 			},
-			goldenedOn: null
+			deathlessOn: null
 		},
 		include: {
 			Campaign: true,

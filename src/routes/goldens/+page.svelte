@@ -18,7 +18,7 @@
 		I'm not goldening any map currently
 	{:else}
 		<span>
-			{#each data.goldening.sort((a, b) => b.goldenPb! / b.numberOfRooms! - a.goldenPb! / a.numberOfRooms!) as map}
+			{#each data.goldening.sort((a, b) => b.deathlessPb! / b.numberOfRooms! - a.deathlessPb! / a.numberOfRooms!) as map}
 				<GoldeningMap {map} />
 			{/each}
 		</span>
