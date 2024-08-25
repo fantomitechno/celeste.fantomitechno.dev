@@ -128,10 +128,10 @@
 					Fastest clear: {fromTime(map.fastestClear)}
 				</span>
 			{/if}
-			{#if map.lowDeath}
+			{#if map.lowDeaths}
 				<span>
 					<img src={skullGold} alt="A gold skull" />
-					Lowest death run: {map.lowDeath}
+					Lowest death run: {map.lowDeaths}
 				</span>
 			{/if}
 		</div>
@@ -182,7 +182,8 @@
 									.map(([k, _]) => k)
 									.join(', ')}
 							{/if}
-						</label><label>
+						</label>
+						<label>
 							Search campaign
 							<Search type="campaign" bind:results={filteredCampaign} />
 							{#if filteredCampaign.length != 0}
@@ -216,25 +217,25 @@
 					<div>
 						<label>
 							Berry count
-							<input name="berries" type="number" value={map.containsBerries} />
+							<input name="containsBerries" type="number" value={map.containsBerries} />
 						</label>
 						<label>
 							Berries collected
-							<input name="berriesCollected" type="number" value={map.collectedberries} />
+							<input name="collectedberries" type="number" value={map.collectedberries} />
 						</label>
 						<label>
 							Moon Berry collected
-							<input name="moonBerry" type="checkbox" checked={map.collectedMoonBerry} />
+							<input name="collectedMoonBerry" type="checkbox" checked={map.collectedMoonBerry} />
 						</label>
 					</div>
 					<div>
 						<label>
 							Room count
-							<input name="rooms" type="number" value={map.numberOfRooms} />
+							<input name="numberOfRooms" type="number" value={map.numberOfRooms} />
 						</label>
 						<label>
-							Golden PB
-							<input name="goldenPb" type="number" value={map.deathlessPb} />
+							Deathless PB
+							<input name="deathlessPb" type="number" value={map.deathlessPb} />
 						</label>
 					</div>
 				</span>
@@ -265,12 +266,12 @@
 						</label>
 						<label>
 							Lowest deaths
-							<input name="lowDeaths" type="number" value={map.lowDeath} />
+							<input name="lowDeaths" type="number" value={map.lowDeaths} />
 						</label>
 						<label>
-							Goldened the
+							Deathless the
 							<input
-								name="goldened"
+								name="deathlessOn"
 								type="date"
 								value={map.deathlessOn?.toISOString().split('T')[0]}
 							/>
@@ -348,6 +349,14 @@
 	}
 
 	input:not([type='checkbox']):not([type='color']) {
+		width: 100%;
+	}
+
+	input[type='text'] {
+		width: 98.2%;
+	}
+
+	select {
 		width: 100%;
 	}
 

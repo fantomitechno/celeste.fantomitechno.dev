@@ -45,7 +45,7 @@ model Map {
   time         Int  @default(0)
   deaths       Int  @default(0)
   fastestClear Int?
-  lowDeath     Int?
+  lowDeaths    Int?
 }
 
 enum DeathlessBerry {

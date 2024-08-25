@@ -23,50 +23,52 @@ export const actions: Actions = {
 
 		const data = await request.formData();
 
+		// Metadata
 		const name = data.get('name')?.valueOf() as string | undefined;
-
 		if (!name) return fail(400);
 
-		const cleared = data.get('cleared')?.valueOf() as string | undefined;
-		const goldened = data.get('goldened')?.valueOf() as string | undefined;
-
-		const berriesCollected = data.get('berriesCollected')?.valueOf() as string | undefined;
-		const pbRoom = data.get('goldenPb')?.valueOf() as string | undefined;
-		const berryCount = data.get('berries')?.valueOf() as string | undefined;
-		const rooms = data.get('rooms')?.valueOf() as string | undefined;
-		const category = data.get('category')?.valueOf() as string | undefined;
 		let campaignId = data.get('campaign')?.valueOf() as string | undefined;
+		const category = data.get('category')?.valueOf() as string | undefined;
 		const link = data.get('link')?.valueOf() as string | undefined;
 		const mapper = data.get('mapper')?.valueOf() as string | null;
-		const moonBerry = data.has('moonBerry');
 		const video = data.get('video')?.valueOf() as string | null;
+
+		// Date informations
+		const cleared = data.get('cleared')?.valueOf() as string | undefined;
+		const deathless = data.get('deathlessOn')?.valueOf() as string | undefined;
+
+		const collectedberriesCount = data.get('collectedberries')?.valueOf() as string | undefined;
+		const pbRoom = data.get('deathlessPb')?.valueOf() as string | undefined;
+		const containsBerriesCount = data.get('containsBerries')?.valueOf() as string | undefined;
+		const roomCount = data.get('numberOfRooms')?.valueOf() as string | undefined;
+		const collectedMoonBerry = data.has('collectedMoonBerry');
 		const timeRaw = data.get('time')?.valueOf() as string | null;
 		const fastTimeRaw = data.get('fastClear')?.valueOf() as string | null;
 		const deathsRaw = data.get('deaths')?.valueOf() as string | null;
-		const lowDeaths = data.get('lowDeaths')?.valueOf() as string | null;
+		const lowDeathsPb = data.get('lowDeaths')?.valueOf() as string | null;
 
 		let clearedOn: Date | null = null;
 		if (cleared) {
 			clearedOn = new Date(Date.parse(cleared));
 		}
 
-		let goldenedOn: Date | null = null;
-		if (goldened) goldenedOn = new Date(Date.parse(goldened));
+		let deathlessOn: Date | null = null;
+		if (deathless) deathlessOn = new Date(Date.parse(deathless));
 
-		let berriesGotten: number | undefined = undefined;
-		if (berriesCollected) berriesGotten = Number(berriesCollected);
+		let collectedberries: number | undefined = undefined;
+		if (collectedberriesCount) collectedberries = Number(collectedberriesCount);
 
-		let berries: number | undefined = undefined;
-		if (berryCount) berries = Number(berryCount);
+		let containsBerries: number | undefined = undefined;
+		if (containsBerriesCount) containsBerries = Number(containsBerriesCount);
 
 		let numberOfRooms: number | undefined = undefined;
-		if (rooms) numberOfRooms = Number(rooms);
+		if (roomCount) numberOfRooms = Number(roomCount);
 
 		let categoryId: undefined | number = undefined;
 		if (category) categoryId = Number(category);
 
-		let goldenPb: undefined | number = undefined;
-		if (pbRoom) goldenPb = Number(pbRoom);
+		let deathlessPb: undefined | number = undefined;
+		if (pbRoom) deathlessPb = Number(pbRoom);
 
 		let time: undefined | number = undefined;
 		if (timeRaw) time = toTime(timeRaw);
@@ -74,8 +76,8 @@ export const actions: Actions = {
 		let fastestClear: undefined | number = undefined;
 		if (fastTimeRaw) fastestClear = toTime(fastTimeRaw);
 
-		let lowDeath: undefined | number = undefined;
-		if (lowDeaths) lowDeath = Number(lowDeaths);
+		let lowDeaths: undefined | number = undefined;
+		if (lowDeathsPb) lowDeaths = Number(lowDeathsPb);
 
 		let deaths: undefined | number = undefined;
 		if (deathsRaw) deaths = Number(deathsRaw);
@@ -85,22 +87,22 @@ export const actions: Actions = {
 				id: Number(params.mapId)
 			},
 			data: {
-				goldenedOn,
+				deathlessOn,
 				clearedOn,
-				berriesGotten,
-				berries,
+				collectedberries,
+				containsBerries,
 				campaignId,
 				categoryId,
 				numberOfRooms,
 				link,
 				name,
-				goldenPb,
+				deathlessPb,
 				mapper,
-				moonBerry,
+				collectedMoonBerry,
 				video,
 				time,
 				fastestClear,
-				lowDeath,
+				lowDeaths,
 				deaths
 			}
 		});
