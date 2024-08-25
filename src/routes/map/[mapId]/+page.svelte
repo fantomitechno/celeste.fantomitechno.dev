@@ -356,10 +356,6 @@
 		width: 98.2%;
 	}
 
-	select {
-		width: 100%;
-	}
-
 	#edit button {
 		width: 45%;
 		margin: 1em auto 0;
