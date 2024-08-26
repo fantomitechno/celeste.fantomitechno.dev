@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Map from '$lib/components/Map.svelte';
+	import { isRainbowCleared } from '$lib/clear';
+	import rainbowBerry from '$lib/images/berries/rainbowBerry.gif';
+	import ghostRainbowBerry from '$lib/images/berries/ghostRainbowBerry.gif';
 
 	export let data: PageData;
 
@@ -35,6 +38,17 @@
 						{#each campaign.categories.filter((c) => !searchValue.length || c.maps.find((m) => m.name.search(new RegExp(searchValue, 'ig')) != -1) || c.name.search(new RegExp(searchValue, 'ig')) != -1 || campaign.name.search(new RegExp(searchValue, 'ig')) != -1) as category}
 							<li class="category" style={`--color-border: ${category.color}`}>
 								<h2>{category.name}</h2>
+								{#if category.containsRainbow}
+									<div id="rainbow">
+										{#if isRainbowCleared(category)}
+											<img src={rainbowBerry} alt="A rainbow strawberry" />
+											Got the Rainbow Berry
+										{:else}
+											<img src={ghostRainbowBerry} alt="A rainbow strawberry" />
+											Did not get the Rainbow Berry
+										{/if}
+									</div>
+								{/if}
 								<ul>
 									{#each category.maps.filter((m) => !searchValue.length || m.name.search(new RegExp(searchValue, 'ig')) != -1 || category.name.search(new RegExp(searchValue, 'ig')) != -1 || campaign.name.search(new RegExp(searchValue, 'ig')) != -1) as map}
 										<li>
@@ -116,5 +130,19 @@
 
 	li {
 		display: block;
+	}
+
+	#rainbow {
+		padding-left: 0.2em;
+		display: flex;
+		align-items: center;
+
+		border-left: 0.2em solid var(--color-primary);
+	}
+
+	#rainbow > img {
+		padding-right: 0.2em;
+		width: 2em;
+		align-self: center;
 	}
 </style>

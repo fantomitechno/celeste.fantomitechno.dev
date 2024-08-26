@@ -25,11 +25,11 @@ model Map {
   deathlessOn DateTime?
 
   // Collectibles infos
-  containsMoonBerry Boolean @default(false)
-  containsCassette  Boolean @default(false)
-  containsHeart     Boolean @default(false)
-  heartType HeartType @default(BLUE)
-  containsBerries   Int     @default(0)
+  containsMoonBerry Boolean   @default(false)
+  containsCassette  Boolean   @default(false)
+  containsHeart     Boolean   @default(true)
+  heartType         HeartType @default(BLUE)
+  containsBerries   Int       @default(0)
 
   // Collected infos
   collectedMoonBerry Boolean @default(false)

@@ -1,22 +1,47 @@
 <script lang="ts">
+	// Berries
 	import berry from '$lib/images/berries/Strawberry_idle.webp';
+	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
 	import moonBerry from '$lib/images/berries/moonBerry.gif';
 	import ghostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
-	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
 	import gberry from '$lib/images/berries/goldBerry.gif';
 	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
+	import sberry from '$lib/images/berries/silverBerry.gif';
+	import ghostSBerry from '$lib/images/berries/ghostSilverBerry.gif';
+	import pberry from '$lib/images/berries/platBerry.gif';
+	import ghostPBerry from '$lib/images/berries/ghostPlatBerry.gif';
+
+	// CLear status
 	import dot from '$lib/images/journal/dot.png';
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
-	import flagCP from '$lib/images/FlagCP.gif';
+
+	// Stats
 	import time from '$lib/images/journal/time.png';
 	import fasttime from '$lib/images/journal/fasttime.png';
 	import skullBlue from '$lib/images/journal/skullBlue.png';
 	import skullGold from '$lib/images/journal/skullGold.png';
+
+	// Golden status
+	import flagCP from '$lib/images/FlagCP.gif';
+
+	// Collectibles
 	import cassette from '$lib/images/cassette.gif';
 	import cassetteGhost from '$lib/images/cassetteGhost.gif';
+	import blueHeart from '$lib/images/hearts/BlueHeart.gif';
+	import yellowHeart from '$lib/images/hearts/YellowHeart.gif';
+	import redHeart from '$lib/images/hearts/RedHeart.gif';
+	import orangeHeart from '$lib/images/hearts/OrangeHeart.gif';
+	import purpleHeart from '$lib/images/hearts/PurpleHeart.gif';
+	import normalGhostHeart from '$lib/images/hearts/GhostHeart.gif';
+	import collabBlueHeart from '$lib/images/hearts/CollabBlueHeart.gif';
+	import collabYellowHeart from '$lib/images/hearts/CollabYellowHeart.gif';
+	import collabRedHeart from '$lib/images/hearts/CollabRedHeart.gif';
+	import collabOrangeHeart from '$lib/images/hearts/CollabOrangeHeart.gif';
+	import collabPurpleHeart from '$lib/images/hearts/CollabPurpleHeart.gif';
+	import collabGhostHeart from '$lib/images/hearts/CollabGhostHeart.gif';
 
-	import { DeathlessBerry, HeartType, type Campaign, type Category } from '@prisma/client';
+	import type { Campaign, Category } from '@prisma/client';
 	import type { PageData } from './$types';
 
 	import Search from '$lib/components/Search.svelte';
@@ -44,10 +69,22 @@
 	let deathlessGhostBerry: string = '';
 	let deathlessBerryName: string = '';
 	switch (map?.deathlessType) {
-		case DeathlessBerry.GOLDEN:
+		case 'GOLDEN':
 			deathlessBerry = gberry;
 			deathlessGhostBerry = ghostGBerry;
 			deathlessBerryName = 'Golden';
+			break;
+
+		case 'PLATINUM':
+			deathlessBerry = pberry;
+			deathlessGhostBerry = ghostPBerry;
+			deathlessBerryName = 'Platinum';
+			break;
+
+		case 'SILVER':
+			deathlessBerry = sberry;
+			deathlessGhostBerry = ghostSBerry;
+			deathlessBerryName = 'Silver';
 			break;
 
 		default:
@@ -55,10 +92,58 @@
 	}
 
 	let heart: string = '';
-	let heartGhost: string = '';
+	let ghostHeart: string = '';
 	switch (map?.heartType) {
-		case HeartType.BLUE:
+		case 'BLUE':
+			heart = blueHeart;
+			ghostHeart = normalGhostHeart;
 			break;
+
+		case 'YELLOW':
+			heart = yellowHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'RED':
+			heart = redHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'ORANGE':
+			heart = orangeHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'PURPLE':
+			heart = purpleHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'COLLAB_BLUE':
+			heart = collabBlueHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_YELLOW':
+			heart = collabYellowHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_RED':
+			heart = collabRedHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_ORANGE':
+			heart = collabOrangeHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_PURPLE':
+			heart = collabPurpleHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
 		default:
 			break;
 	}
@@ -116,10 +201,6 @@
 					1
 						? 's'
 						: ''}
-					{#if map.collectedMoonBerry}
-						<br />
-						Collected Moon Berry
-					{/if}
 				</span>
 			{/if}
 			<span id="collectibles">
@@ -127,7 +208,7 @@
 					<img src={map.collectedCassette ? cassette : cassetteGhost} alt="A cassette" />
 				{/if}
 				{#if map.containsHeart}
-					<img src={map.collectedHeart ? cassette : cassetteGhost} alt="A cassette" />
+					<img src={map.collectedHeart ? heart : ghostHeart} alt="A heart" />
 				{/if}
 				{#if map.containsMoonBerry}
 					<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
@@ -298,6 +379,29 @@
 							Deathless PB
 							<input name="deathlessPb" type="number" value={map.deathlessPb} />
 						</label>
+						<label>
+							Deathless Berry Type
+							<select name="deathlessType" value={map.deathlessType}>
+								<option value="GOLDEN">Golden berry</option>
+								<option value="SILVER">Silver berry</option>
+								<option value="PLATINUM">Platinum berry</option>
+							</select>
+						</label>
+						<label>
+							Heart Type
+							<select name="heartType" value={map.heartType}>
+								<option value="BLUE">Blue heart</option>
+								<option value="RED">Red heart</option>
+								<option value="YELLOW">Yellow heart</option>
+								<option value="ORANGE">Orange heart</option>
+								<option value="PURPLE">Purple heart</option>
+								<option value="COLLAB_BLUE">Blue Collab heart</option>
+								<option value="COLLAB_RED">Red Collab heart</option>
+								<option value="COLLAB_YELLOW">Yellow Collab heart</option>
+								<option value="COLLAB_ORANGE">Orange Collab heart</option>
+								<option value="COLLAB_PURPLE">Purple Collab heart</option>
+							</select>
+						</label>
 					</div>
 				</span>
 				<hr class="separator" />
@@ -409,8 +513,10 @@
 		flex-direction: column;
 	}
 
-	input:not([type='checkbox']):not([type='color']) {
+	input:not([type='checkbox']):not([type='color']),
+	select {
 		width: 100%;
+		font: inherit;
 	}
 
 	input[type='text'] {

@@ -1,11 +1,34 @@
 <script lang="ts">
 	import { isFullCleared } from '$lib/clear';
 	import gberry from '$lib/images/berries/goldBerry.gif';
+	import sberry from '$lib/images/berries/silverBerry.gif';
+	import pberry from '$lib/images/berries/platBerry.gif';
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
 	import type { Campaign, Category, Map } from '@prisma/client';
 
 	export let map: Map & { Campaign: Campaign | null; Category: Category | null };
+	let deathlessBerry: string = '';
+	let deathlessBerryName: string = '';
+	switch (map.deathlessType) {
+		case 'GOLDEN':
+			deathlessBerry = gberry;
+			deathlessBerryName = 'Golden';
+			break;
+
+		case 'PLATINUM':
+			deathlessBerry = pberry;
+			deathlessBerryName = 'Platinum';
+			break;
+
+		case 'SILVER':
+			deathlessBerry = sberry;
+			deathlessBerryName = 'Silver';
+			break;
+
+		default:
+			break;
+	}
 </script>
 
 <span class="map">
@@ -34,8 +57,8 @@
 		</hgroup>
 		<span>
 			<div>
-				<img src={gberry} alt="A golden strawberry" />
-				Goldened on {map.deathlessOn!.toDateString()}
+				<img src={deathlessBerry} alt={`A ${deathlessBerryName} strawberry`} />
+				Got the {deathlessBerryName} berry on {map.deathlessOn!.toDateString()}
 			</div>
 
 			<div>

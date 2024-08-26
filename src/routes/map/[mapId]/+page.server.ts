@@ -2,6 +2,7 @@ import { prisma } from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { toTime } from '$lib/time';
+import type { DeathlessBerry, HeartType } from '@prisma/client';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const map = await prisma.map.findFirst({
@@ -58,18 +59,20 @@ export const actions: Actions = {
 		const collectedCassette = data.has('collectedCassette');
 
 		// Collectibles infos
+		const containsMoonBerry = data.has('containsMoonBerry') || collectedMoonBerry;
+		const containsCassette = data.has('containsCassette') || collectedCassette;
+		const containsHeart = data.has('containsHeart') || collectedHeart;
+		const heartType = data.get('heartType')?.valueOf() as HeartType | undefined;
+
 		const containsBerriesCount = data.get('containsBerries')?.valueOf() as string | undefined;
 		let containsBerries: number | undefined = undefined;
 		if (containsBerriesCount) containsBerries = Number(containsBerriesCount);
-
-		const containsMoonBerry = data.has('containsMoonBerry') || collectedMoonBerry;
-		const containsHeart = data.has('containsHeart') || collectedHeart;
-		const containsCassette = data.has('containsCassette') || collectedCassette;
 
 		// Deathless informations
 		const pbRoom = data.get('deathlessPb')?.valueOf() as string | undefined;
 		let deathlessPb: undefined | number = undefined;
 		if (pbRoom) deathlessPb = Number(pbRoom);
+		const deathlessType = data.get('deathlessType')?.valueOf() as DeathlessBerry | undefined;
 
 		const roomCount = data.get('numberOfRooms')?.valueOf() as string | undefined;
 		let numberOfRooms: number | undefined = undefined;
@@ -110,6 +113,7 @@ export const actions: Actions = {
 				containsMoonBerry,
 				containsCassette,
 				containsHeart,
+				heartType,
 				containsBerries,
 
 				collectedMoonBerry,
@@ -118,6 +122,7 @@ export const actions: Actions = {
 				collectedberries,
 
 				deathlessPb,
+				deathlessType,
 				numberOfRooms,
 
 				time,

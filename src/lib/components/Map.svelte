@@ -4,6 +4,10 @@
 	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
 	import gberry from '$lib/images/berries/goldBerry.gif';
 	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
+	import sberry from '$lib/images/berries/silverBerry.gif';
+	import ghostSBerry from '$lib/images/berries/ghostSilverBerry.gif';
+	import pberry from '$lib/images/berries/platBerry.gif';
+	import ghostPBerry from '$lib/images/berries/ghostPlatBerry.gif';
 	import dot from '$lib/images/journal/dot.png';
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
@@ -14,6 +18,32 @@
 
 	export let map: Map;
 	export let campaign: Campaign | null = null;
+
+	let deathlessBerry: string = '';
+	let deathlessGhostBerry: string = '';
+	let deathlessBerryName: string = '';
+	switch (map.deathlessType) {
+		case 'GOLDEN':
+			deathlessBerry = gberry;
+			deathlessGhostBerry = ghostGBerry;
+			deathlessBerryName = 'Golden';
+			break;
+
+		case 'PLATINUM':
+			deathlessBerry = pberry;
+			deathlessGhostBerry = ghostPBerry;
+			deathlessBerryName = 'Platinum';
+			break;
+
+		case 'SILVER':
+			deathlessBerry = sberry;
+			deathlessGhostBerry = ghostSBerry;
+			deathlessBerryName = 'Silver';
+			break;
+
+		default:
+			break;
+	}
 </script>
 
 <a href={'/map/' + map.id} class="map">
@@ -27,11 +57,7 @@
 		{#if map.containsBerries || map.collectedMoonBerry}
 			<div>
 				<img
-					src={map.collectedMoonBerry
-						? moonBerry
-						: map.containsBerries <= map.collectedberries
-							? berry
-							: ghostBerry}
+					src={map.containsBerries <= map.collectedberries ? berry : ghostBerry}
 					alt="A strawberry"
 				/>
 				Got {map.collectedberries} out of {map.containsBerries}
@@ -39,14 +65,14 @@
 		{/if}
 		<div>
 			{#if map.deathlessOn}
-				<img src={gberry} alt="A golden strawberry" />
-				Goldened on {map.deathlessOn.toDateString()}
+				<img src={deathlessBerry} alt={`A ${deathlessBerryName} strawberry`} />
+				Got the {deathlessBerryName} berry on {map.deathlessOn.toDateString()}
 			{:else if map.deathlessPb && map.numberOfRooms}
 				<img id="flag" src={flagCP} alt="A Flag Checkpoint" />
 				Reached room {map.deathlessPb} out of {map.numberOfRooms}
 			{:else}
-				<img src={ghostGBerry} alt="A golden strawberry" />
-				Still haven't tried goldening
+				<img src={deathlessGhostBerry} alt={`A ${deathlessBerryName} strawberry`} />
+				Still haven't tried getting the {deathlessBerryName} berry
 			{/if}
 		</div>
 

@@ -10,23 +10,11 @@ export const isFullCleared = (map: Map) => {
 	return berryCleared && cassetteCleared && heartCleared && moonBerryCleared && map.clearedOn;
 };
 
-export const isRainbowCleared = async (category: Category) => {
-	const deathlessCleared = await prisma.map.count({
-		where: {
-			categoryId: category.id,
-			campaignId: category.campaignId,
-			deathlessOn: {
-				not: null
-			}
-		}
-	});
+export const isRainbowCleared = (category: Category & { maps: Map[] }) => {
+	let deathlessCleared = 0;
+	for (const map of category.maps) {
+		if (map.deathlessOn) deathlessCleared += 1;
+	}
 
-	const maps = await prisma.map.count({
-		where: {
-			categoryId: category.id,
-			campaignId: category.campaignId
-		}
-	});
-
-	return deathlessCleared == maps;
+	return deathlessCleared == category.maps.length;
 };

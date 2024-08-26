@@ -8,12 +8,15 @@
 	import fullclear from '$lib/images/journal/fullclear.png';
 	import time from '$lib/images/journal/time.png';
 	import skullBlue from '$lib/images/journal/skullBlue.png';
+	import rainbowBerry from '$lib/images/berries/rainbowBerry.gif';
+	import ghostRainbowBerry from '$lib/images/berries/ghostRainbowBerry.gif';
 
 	import Map from '$lib/components/Map.svelte';
 
 	import type { PageData } from './$types';
 	import Gamebanana from '$lib/components/Gamebanana.svelte';
 	import { fromTime } from '$lib/time';
+	import { isRainbowCleared } from '$lib/clear';
 
 	export let data: PageData;
 
@@ -86,6 +89,17 @@
 				{#each campaign.categories as category}
 					<li class="category" style={`--color-border: ${category.color}`}>
 						{category.name}
+						{#if category.containsRainbow}
+							<div id="rainbow">
+								{#if isRainbowCleared(category)}
+									<img src={rainbowBerry} alt="A rainbow strawberry" />
+									Got the Rainbow Berry
+								{:else}
+									<img src={ghostRainbowBerry} alt="A rainbow strawberry" />
+									Did not get the Rainbow Berry
+								{/if}
+							</div>
+						{/if}
 						<ul>
 							{#each category.maps as map}
 								<li class="map-order">
@@ -114,6 +128,14 @@
 										<option selected={category.order == index} value={index}>{index}</option>
 									{/each}
 								</select>
+								<label>
+									Contains Rainbow Berry
+									<input
+										name="containsRainbow"
+										type="checkbox"
+										checked={category.containsRainbow}
+									/>
+								</label>
 								<button>Submit</button>
 								<button formaction="?/deleteCategory">Delete</button>
 							</form>
@@ -292,5 +314,19 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1em;
+	}
+
+	#rainbow {
+		padding-left: 0.2em;
+		display: flex;
+		align-items: center;
+
+		border-left: 0.2em solid var(--color-primary);
+	}
+
+	#rainbow > img {
+		padding-right: 0.2em;
+		width: 2em;
+		align-self: center;
 	}
 </style>

@@ -133,6 +133,8 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const categoryId = data.get('id')?.valueOf() as string | undefined;
 		const order = data.get('order')?.valueOf() as string | undefined;
+		const containsRainbow = data.has('containsRainbow');
+
 		if (categoryId) {
 			const id = Number(categoryId);
 			await prisma.category.update({
@@ -141,7 +143,8 @@ export const actions: Actions = {
 					campaignId: params.campaignId
 				},
 				data: {
-					order: Number(order)
+					order: Number(order),
+					containsRainbow
 				}
 			});
 		}
