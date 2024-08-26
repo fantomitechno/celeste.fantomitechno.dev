@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>celeste.fantomitechno.dev</title>
+	<title>Celeste progression sheet</title>
 	<meta name="description" content="Celeste progression sheet" />
 	<meta name="theme-color" content="#2e1e45" />
 </svelte:head>
