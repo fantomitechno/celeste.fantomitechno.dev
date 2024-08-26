@@ -1,38 +1,26 @@
-# create-svelte
+# Celeste progression tracker
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A tracker on Celeste progression
 
-## Creating a project
+> DISCLAIMER\
+> I built this website for my personal use, so it won't have directly everything needed but you can always open an issue and propose new features!
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- Campaigns listing
+- Standalone Maps listing
+- Goldening progress (PB room, done, not started)
+- Stats (Time passed, best time, deaths, low deaths)
+- Collectible tracking (Berries, Moon Berry, Cassette, Crystal Heart, FC status)
+- Possibility to had a video of the clear/golden (only 1 by map)
+- Admin panels
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## How to deploy
 
-## Developing
+Ok this gonna be a very very hard one 😓\
+I'm trying to find ways to host it with services like Vercel but I can't find an easy way to have a free Postgres Database
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Credits
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Inspirations Sheets: ParrotDash, Issy/MistralFox
+- Developement Support: nalo :3
