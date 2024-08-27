@@ -99,27 +99,27 @@ export const actions: Actions = {
 		if (!customGhostHeart?.length) customGhostHeart = null;
 
 		let customHeart = data.get('customHeart')?.valueOf() as string | null;
-		if (!customHeart?.length) customGhostHeart = null;
+		if (!customHeart?.length) customHeart = null;
 
 		let customGhostDeathlessBerry = data.get('customGhostDeathlessBerry')?.valueOf() as
 			| string
 			| null;
-		if (!customGhostDeathlessBerry?.length) customGhostHeart = null;
+		if (!customGhostDeathlessBerry?.length) customGhostDeathlessBerry = null;
 
 		let customDeathlessBerry = data.get('customDeathlessBerry')?.valueOf() as string | null;
-		if (!customDeathlessBerry?.length) customGhostHeart = null;
+		if (!customDeathlessBerry?.length) customGhostDeathlessBerry = null;
 
 		let customGhostBerry = data.get('customGhostBerry')?.valueOf() as string | null;
-		if (!customGhostBerry?.length) customGhostHeart = null;
+		if (!customGhostBerry?.length) customGhostBerry = null;
 
 		let customBerry = data.get('customBerry')?.valueOf() as string | null;
-		if (!customBerry?.length) customGhostHeart = null;
+		if (!customBerry?.length) customBerry = null;
 
 		let customGhostMoonBerry = data.get('customGhostMoonBerry')?.valueOf() as string | null;
-		if (!customGhostMoonBerry?.length) customGhostHeart = null;
+		if (!customGhostMoonBerry?.length) customGhostMoonBerry = null;
 
 		let customMoonBerry = data.get('customMoonBerry')?.valueOf() as string | null;
-		if (!customMoonBerry?.length) customGhostHeart = null;
+		if (!customMoonBerry?.length) customMoonBerry = null;
 
 		await prisma.map.update({
 			where: {
