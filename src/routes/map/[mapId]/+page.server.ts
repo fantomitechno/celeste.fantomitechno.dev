@@ -107,7 +107,7 @@ export const actions: Actions = {
 		if (!customGhostDeathlessBerry?.length) customGhostDeathlessBerry = null;
 
 		let customDeathlessBerry = data.get('customDeathlessBerry')?.valueOf() as string | null;
-		if (!customDeathlessBerry?.length) customGhostDeathlessBerry = null;
+		if (!customDeathlessBerry?.length) customDeathlessBerry = null;
 
 		let customGhostBerry = data.get('customGhostBerry')?.valueOf() as string | null;
 		if (!customGhostBerry?.length) customGhostBerry = null;
