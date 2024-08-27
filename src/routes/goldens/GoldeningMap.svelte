@@ -14,7 +14,6 @@
 		<hgroup>
 			<h1>
 				{map.name}
-				{map.mapper && `- by ${map.mapper}`}
 				{#if map.mapper}
 					- by {map.mapper}
 				{:else if map.Campaign?.mapper}
