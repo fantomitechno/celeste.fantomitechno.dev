@@ -1,9 +1,9 @@
 <script lang="ts">
 	// Berries
-	import berry from '$lib/images/berries/Strawberry_idle.webp';
-	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
-	import moonBerry from '$lib/images/berries/moonBerry.gif';
-	import ghostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
+	import defaultBerry from '$lib/images/berries/Strawberry_idle.webp';
+	import defaultGhostBerry from '$lib/images/berries/ghostBerry.gif';
+	import defaultMoonBerry from '$lib/images/berries/moonBerry.gif';
+	import defaultGhostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
 	import gberry from '$lib/images/berries/goldBerry.gif';
 	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
 	import sberry from '$lib/images/berries/silverBerry.gif';
@@ -90,6 +90,12 @@
 		default:
 			break;
 	}
+	if (map?.customGhostDeathlessBerry) {
+		deathlessGhostBerry = map.customGhostDeathlessBerry;
+	}
+	if (map?.customDeathlessBerry) {
+		deathlessBerry = map.customDeathlessBerry;
+	}
 
 	let heart: string = '';
 	let ghostHeart: string = '';
@@ -147,6 +153,51 @@
 		default:
 			break;
 	}
+	if (map?.customGhostHeart) {
+		ghostHeart = map.customGhostHeart;
+	}
+	if (map?.customHeart) {
+		heart = map.customHeart;
+	}
+
+	const moonBerry = map?.customMoonBerry ?? defaultMoonBerry;
+	const ghostMoonBerry = map?.customGhostMoonBerry ?? defaultGhostMoonBerry;
+
+	const berry = map?.customBerry ?? defaultBerry;
+	const ghostBerry = map?.customGhostBerry ?? defaultGhostBerry;
+
+	const readFileForTransfer = (upload: FileList) => {
+		const file = upload[0];
+		return new Promise((resolve, _) => {
+			const reader = new FileReader();
+			reader.onloadend = () => resolve(reader.result as string);
+			reader.readAsDataURL(file);
+		}) as Promise<string>;
+	};
+
+	let customGhostHeartUpload: FileList;
+	let customGhostHeartBase64 = map?.customGhostHeart ?? '';
+
+	let customHeartUpload: FileList;
+	let customHeartBase64 = map?.customHeart ?? '';
+
+	let customGhostDeathlessBerryUpload: FileList;
+	let customGhostDeathlessBerryBase64 = map?.customGhostDeathlessBerry ?? '';
+
+	let customDeathlessBerryUpload: FileList;
+	let customDeathlessBerryBase64 = map?.customDeathlessBerry ?? '';
+
+	let customGhostBerryUpload: FileList;
+	let customGhostBerryBase64 = map?.customGhostBerry ?? '';
+
+	let customBerryUpload: FileList;
+	let customBerryBase64 = map?.customBerry ?? '';
+
+	let customGhostMoonBerryUpload: FileList;
+	let customGhostMoonBerryBase64 = map?.customGhostMoonBerry ?? '';
+
+	let customMoonBerryUpload: FileList;
+	let customMoonBerryBase64 = map?.customMoonBerry ?? '';
 </script>
 
 <svelte:head>
@@ -371,6 +422,119 @@
 								</label>
 							</div>
 						</span>
+						<span>
+							<div>
+								<label>
+									Custom Heart (Ghost)
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customGhostHeartUpload}
+										on:change={async () => {
+											customGhostHeartBase64 = await readFileForTransfer(customGhostHeartUpload);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customGhostHeartBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customGhostHeart"
+										hidden
+										bind:value={customGhostHeartBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customGhostHeartBase64} alt="" />
+								<label>
+									Custom Deathless Berry (Ghost)
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customGhostDeathlessBerryUpload}
+										on:change={async () => {
+											customGhostDeathlessBerryBase64 = await readFileForTransfer(
+												customGhostDeathlessBerryUpload
+											);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customGhostDeathlessBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customGhostDeathlessBerry"
+										hidden
+										bind:value={customGhostDeathlessBerryBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customGhostDeathlessBerryBase64} alt="" />
+							</div>
+							<div>
+								<label>
+									Custom Heart
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customHeartUpload}
+										on:change={async () => {
+											customHeartBase64 = await readFileForTransfer(customHeartUpload);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customHeartBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input type="text" name="customHeart" hidden bind:value={customHeartBase64} />
+								</label>
+								<img class="upload-preview" src={customHeartBase64} alt="" />
+								<label>
+									Custom Deathless Berry
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customDeathlessBerryUpload}
+										on:change={async () => {
+											customDeathlessBerryBase64 = await readFileForTransfer(
+												customDeathlessBerryUpload
+											);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customDeathlessBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customDeathlessBerry"
+										hidden
+										bind:value={customDeathlessBerryBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customDeathlessBerryBase64} alt="" />
+							</div>
+						</span>
 					</div>
 					<div>
 						<label>
@@ -404,6 +568,117 @@
 								<option value="COLLAB_PURPLE">Purple Collab heart</option>
 							</select>
 						</label>
+						<span>
+							<div>
+								<label>
+									Custom Berry (Ghost)
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customGhostBerryUpload}
+										on:change={async () => {
+											customGhostBerryBase64 = await readFileForTransfer(customGhostBerryUpload);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customGhostBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customGhostBerry"
+										hidden
+										bind:value={customGhostBerryBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customGhostBerryBase64} alt="" />
+								<label>
+									Custom Moon Berry (Ghost)
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customGhostMoonBerryUpload}
+										on:change={async () => {
+											customGhostMoonBerryBase64 = await readFileForTransfer(
+												customGhostMoonBerryUpload
+											);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customGhostMoonBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customGhostMoonBerry"
+										hidden
+										bind:value={customGhostMoonBerryBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customGhostMoonBerryBase64} alt="" />
+							</div>
+							<div>
+								<label>
+									Custom Berry
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customBerryUpload}
+										on:change={async () => {
+											customBerryBase64 = await readFileForTransfer(customBerryUpload);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input type="text" name="customBerry" hidden bind:value={customBerryBase64} />
+								</label>
+								<img class="upload-preview" src={customBerryBase64} alt="" />
+								<label>
+									Custom Moon Berry
+									<input
+										type="file"
+										accept=".png,.jpg,.gif"
+										bind:files={customMoonBerryUpload}
+										on:change={async () => {
+											customMoonBerryBase64 = await readFileForTransfer(customMoonBerryUpload);
+										}}
+									/>
+									<button
+										type="button"
+										class="upload-delete"
+										on:click={() => {
+											customMoonBerryBase64 = '';
+										}}
+									>
+										Clear
+									</button>
+									<input
+										type="text"
+										name="customMoonBerry"
+										hidden
+										bind:value={customMoonBerryBase64}
+									/>
+								</label>
+								<img class="upload-preview" src={customMoonBerryBase64} alt="" />
+							</div>
+						</span>
 					</div>
 				</span>
 				<hr class="separator" />
@@ -464,12 +739,13 @@
 
 				<span>
 					<button
+						type="submit"
 						disabled={Object.values(checkedCampaign).filter((v) => v).length > 1 ||
 							Object.values(checkedCategory).filter((v) => v).length > 1 ||
 							(Object.values(checkedCategory).filter((v) => v).length == 1 &&
 								Object.values(checkedCampaign).filter((v) => v).length != 1)}>Submit</button
 					>
-					<button formaction="?/delete">Delete</button>
+					<button type="submit" formaction="?/delete">Delete</button>
 				</span>
 			</form>
 		{/if}
@@ -525,7 +801,7 @@
 		width: 98.2%;
 	}
 
-	#edit button {
+	#edit button:not(.upload-delete) {
 		width: 45%;
 		margin: 1em auto 0;
 	}
@@ -587,6 +863,10 @@
 
 	#flag {
 		padding: 0 0.7em;
+		width: 3em;
+	}
+
+	.upload-preview {
 		width: 3em;
 	}
 </style>

@@ -47,6 +47,16 @@ model Map {
   deaths       Int  @default(0)
   fastestClear Int?
   lowDeaths    Int?
+
+  // Customs textures
+  customGhostHeart          String?
+  customHeart               String?
+  customGhostDeathlessBerry String?
+  customDeathlessBerry      String?
+  customGhostBerry          String?
+  customBerry               String?
+  customGhostMoonBerry          String?
+  customMoonBerry               String?
 }
 
 enum DeathlessBerry {

@@ -95,6 +95,17 @@ export const actions: Actions = {
 		let lowDeaths: undefined | number = undefined;
 		if (lowDeathsPb) lowDeaths = Number(lowDeathsPb);
 
+		const customGhostHeart = data.get('customGhostHeart')?.valueOf() as string | null;
+		const customHeart = data.get('customHeart')?.valueOf() as string | null;
+		const customGhostDeathlessBerry = data.get('customGhostDeathlessBerry')?.valueOf() as
+			| string
+			| null;
+		const customDeathlessBerry = data.get('customDeathlessBerry')?.valueOf() as string | null;
+		const customGhostBerry = data.get('customGhostBerry')?.valueOf() as string | null;
+		const customBerry = data.get('customBerry')?.valueOf() as string | null;
+		const customGhostMoonBerry = data.get('customGhostMoonBerry')?.valueOf() as string | null;
+		const customMoonBerry = data.get('customMoonBerry')?.valueOf() as string | null;
+
 		await prisma.map.update({
 			where: {
 				id: Number(params.mapId)
@@ -128,7 +139,16 @@ export const actions: Actions = {
 				time,
 				deaths,
 				fastestClear,
-				lowDeaths
+				lowDeaths,
+
+				customGhostHeart,
+				customHeart,
+				customGhostDeathlessBerry,
+				customDeathlessBerry,
+				customGhostBerry,
+				customBerry,
+				customGhostMoonBerry,
+				customMoonBerry
 			}
 		});
 	},

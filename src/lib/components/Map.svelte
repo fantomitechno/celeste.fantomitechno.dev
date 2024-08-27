@@ -1,7 +1,7 @@
 <script lang="ts">
-	import berry from '$lib/images/berries/Strawberry_idle.webp';
-	import moonBerry from '$lib/images/berries/moonBerry.gif';
-	import ghostBerry from '$lib/images/berries/ghostBerry.gif';
+	import defaultBerry from '$lib/images/berries/Strawberry_idle.webp';
+	import defaultMoonBerry from '$lib/images/berries/moonBerry.gif';
+	import defaultGhostBerry from '$lib/images/berries/ghostBerry.gif';
 	import gberry from '$lib/images/berries/goldBerry.gif';
 	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
 	import sberry from '$lib/images/berries/silverBerry.gif';
@@ -26,7 +26,7 @@
 	import collabOrangeHeart from '$lib/images/hearts/CollabOrangeHeart.gif';
 	import collabPurpleHeart from '$lib/images/hearts/CollabPurpleHeart.gif';
 	import collabGhostHeart from '$lib/images/hearts/CollabGhostHeart.gif';
-	import ghostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
+	import defaultGhostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
 
 	import type { Campaign, Map } from '@prisma/client';
 	import { isFullCleared } from '$lib/clear';
@@ -58,6 +58,12 @@
 
 		default:
 			break;
+	}
+	if (map?.customGhostDeathlessBerry) {
+		deathlessGhostBerry = map.customGhostDeathlessBerry;
+	}
+	if (map?.customDeathlessBerry) {
+		deathlessBerry = map.customDeathlessBerry;
 	}
 
 	let heart: string = '';
@@ -116,6 +122,18 @@
 		default:
 			break;
 	}
+	if (map?.customGhostHeart) {
+		ghostHeart = map.customGhostHeart;
+	}
+	if (map?.customHeart) {
+		heart = map.customHeart;
+	}
+
+	const moonBerry = map?.customMoonBerry ?? defaultMoonBerry;
+	const ghostMoonBerry = map?.customGhostMoonBerry ?? defaultGhostMoonBerry;
+
+	const berry = map?.customBerry ?? defaultBerry;
+	const ghostBerry = map?.customGhostBerry ?? defaultGhostBerry;
 </script>
 
 <a href={'/map/' + map.id} class="map">
