@@ -126,15 +126,15 @@
 		- by {campaign.mapper}
 	{/if}
 	<span>
-		{#if map.containsBerries}
-			<div>
-				<img
-					src={map.containsBerries <= map.collectedberries ? berry : ghostBerry}
-					alt="A strawberry"
-				/>
-				Got {map.collectedberries} out of {map.containsBerries}
-			</div>
-		{/if}
+		<div>
+			{#if map.clearedOn}
+				<img src={isFullCleared(map) ? fullclear : clear} alt="A flag" />
+				Cleared on {map.clearedOn.toDateString()}
+			{:else}
+				<img src={dot} alt="A dot" />
+				Still haven't cleared
+			{/if}
+		</div>
 		<div>
 			{#if map.deathlessOn}
 				<img src={deathlessBerry} alt={`A ${deathlessBerryName} strawberry`} />
@@ -148,17 +148,7 @@
 			{/if}
 		</div>
 
-		<div>
-			{#if map.clearedOn}
-				<img src={isFullCleared(map) ? fullclear : clear} alt="A flag" />
-				Cleared on {map.clearedOn.toDateString()}
-			{:else}
-				<img src={dot} alt="A dot" />
-				Still haven't cleared
-			{/if}
-		</div>
-
-		{#if map.containsCassette || map.containsHeart || map.containsMoonBerry}
+		{#if map.containsCassette || map.containsHeart || map.containsMoonBerry || map.containsBerries}
 			<div id="collectibles">
 				Collectibles:
 				{#if map.containsCassette}
@@ -169,6 +159,14 @@
 				{/if}
 				{#if map.containsMoonBerry}
 					<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
+				{/if}
+
+				{#if map.containsBerries}
+					<img
+						src={map.containsBerries <= map.collectedberries ? berry : ghostBerry}
+						alt="A strawberry"
+					/>
+					Got {map.collectedberries} out of {map.containsBerries}
 				{/if}
 			</div>
 		{/if}
