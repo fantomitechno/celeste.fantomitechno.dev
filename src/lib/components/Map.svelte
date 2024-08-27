@@ -54,7 +54,7 @@
 		- by {campaign.mapper}
 	{/if}
 	<span>
-		{#if map.containsBerries || map.collectedMoonBerry}
+		{#if map.containsBerries}
 			<div>
 				<img
 					src={map.containsBerries <= map.collectedberries ? berry : ghostBerry}
