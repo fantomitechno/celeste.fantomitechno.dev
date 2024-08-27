@@ -95,16 +95,31 @@ export const actions: Actions = {
 		let lowDeaths: undefined | number = undefined;
 		if (lowDeathsPb) lowDeaths = Number(lowDeathsPb);
 
-		const customGhostHeart = data.get('customGhostHeart')?.valueOf() as string | null;
-		const customHeart = data.get('customHeart')?.valueOf() as string | null;
-		const customGhostDeathlessBerry = data.get('customGhostDeathlessBerry')?.valueOf() as
+		let customGhostHeart = data.get('customGhostHeart')?.valueOf() as string | null;
+		if (!customGhostHeart?.length) customGhostHeart = null;
+
+		let customHeart = data.get('customHeart')?.valueOf() as string | null;
+		if (!customHeart?.length) customGhostHeart = null;
+
+		let customGhostDeathlessBerry = data.get('customGhostDeathlessBerry')?.valueOf() as
 			| string
 			| null;
-		const customDeathlessBerry = data.get('customDeathlessBerry')?.valueOf() as string | null;
-		const customGhostBerry = data.get('customGhostBerry')?.valueOf() as string | null;
-		const customBerry = data.get('customBerry')?.valueOf() as string | null;
-		const customGhostMoonBerry = data.get('customGhostMoonBerry')?.valueOf() as string | null;
-		const customMoonBerry = data.get('customMoonBerry')?.valueOf() as string | null;
+		if (!customGhostDeathlessBerry?.length) customGhostHeart = null;
+
+		let customDeathlessBerry = data.get('customDeathlessBerry')?.valueOf() as string | null;
+		if (!customDeathlessBerry?.length) customGhostHeart = null;
+
+		let customGhostBerry = data.get('customGhostBerry')?.valueOf() as string | null;
+		if (!customGhostBerry?.length) customGhostHeart = null;
+
+		let customBerry = data.get('customBerry')?.valueOf() as string | null;
+		if (!customBerry?.length) customGhostHeart = null;
+
+		let customGhostMoonBerry = data.get('customGhostMoonBerry')?.valueOf() as string | null;
+		if (!customGhostMoonBerry?.length) customGhostHeart = null;
+
+		let customMoonBerry = data.get('customMoonBerry')?.valueOf() as string | null;
+		if (!customMoonBerry?.length) customGhostHeart = null;
 
 		await prisma.map.update({
 			where: {
