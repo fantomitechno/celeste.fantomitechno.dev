@@ -203,17 +203,19 @@
 						: ''}
 				</span>
 			{/if}
-			<span id="collectibles">
-				{#if map.containsCassette}
-					<img src={map.collectedCassette ? cassette : cassetteGhost} alt="A cassette" />
-				{/if}
-				{#if map.containsHeart}
-					<img src={map.collectedHeart ? heart : ghostHeart} alt="A heart" />
-				{/if}
-				{#if map.containsMoonBerry}
-					<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
-				{/if}
-			</span>
+			{#if map.containsCassette || map.containsHeart || map.containsMoonBerry}
+				<span id="collectibles">
+					{#if map.containsCassette}
+						<img src={map.collectedCassette ? cassette : cassetteGhost} alt="A cassette" />
+					{/if}
+					{#if map.containsHeart}
+						<img src={map.collectedHeart ? heart : ghostHeart} alt="A heart" />
+					{/if}
+					{#if map.containsMoonBerry}
+						<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
+					{/if}
+				</span>
+			{/if}
 			<span>
 				{#if map.deathlessOn}
 					<img src={deathlessBerry} alt={`A ${deathlessBerryName} strawberry`} />
@@ -576,6 +578,11 @@
 
 	#collectibles {
 		justify-content: space-evenly;
+	}
+
+	#collectibles > img {
+		height: 4em;
+		width: auto;
 	}
 
 	#flag {

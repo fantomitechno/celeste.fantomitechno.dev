@@ -12,6 +12,21 @@
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
 	import flagCP from '$lib/images/FlagCP.gif';
+	import cassette from '$lib/images/cassette.gif';
+	import cassetteGhost from '$lib/images/cassetteGhost.gif';
+	import blueHeart from '$lib/images/hearts/BlueHeart.gif';
+	import yellowHeart from '$lib/images/hearts/YellowHeart.gif';
+	import redHeart from '$lib/images/hearts/RedHeart.gif';
+	import orangeHeart from '$lib/images/hearts/OrangeHeart.gif';
+	import purpleHeart from '$lib/images/hearts/PurpleHeart.gif';
+	import normalGhostHeart from '$lib/images/hearts/GhostHeart.gif';
+	import collabBlueHeart from '$lib/images/hearts/CollabBlueHeart.gif';
+	import collabYellowHeart from '$lib/images/hearts/CollabYellowHeart.gif';
+	import collabRedHeart from '$lib/images/hearts/CollabRedHeart.gif';
+	import collabOrangeHeart from '$lib/images/hearts/CollabOrangeHeart.gif';
+	import collabPurpleHeart from '$lib/images/hearts/CollabPurpleHeart.gif';
+	import collabGhostHeart from '$lib/images/hearts/CollabGhostHeart.gif';
+	import ghostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
 
 	import type { Campaign, Map } from '@prisma/client';
 	import { isFullCleared } from '$lib/clear';
@@ -39,6 +54,63 @@
 			deathlessBerry = sberry;
 			deathlessGhostBerry = ghostSBerry;
 			deathlessBerryName = 'Silver';
+			break;
+
+		default:
+			break;
+	}
+
+	let heart: string = '';
+	let ghostHeart: string = '';
+	switch (map?.heartType) {
+		case 'BLUE':
+			heart = blueHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'YELLOW':
+			heart = yellowHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'RED':
+			heart = redHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'ORANGE':
+			heart = orangeHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'PURPLE':
+			heart = purpleHeart;
+			ghostHeart = normalGhostHeart;
+			break;
+
+		case 'COLLAB_BLUE':
+			heart = collabBlueHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_YELLOW':
+			heart = collabYellowHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_RED':
+			heart = collabRedHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_ORANGE':
+			heart = collabOrangeHeart;
+			ghostHeart = collabGhostHeart;
+			break;
+
+		case 'COLLAB_PURPLE':
+			heart = collabPurpleHeart;
+			ghostHeart = collabGhostHeart;
 			break;
 
 		default:
@@ -85,6 +157,21 @@
 				Still haven't cleared
 			{/if}
 		</div>
+
+		{#if map.containsCassette || map.containsHeart || map.containsMoonBerry}
+			<div id="collectibles">
+				Collectibles:
+				{#if map.containsCassette}
+					<img src={map.collectedCassette ? cassette : cassetteGhost} alt="A cassette" />
+				{/if}
+				{#if map.containsHeart}
+					<img src={map.collectedHeart ? heart : ghostHeart} alt="A heart" />
+				{/if}
+				{#if map.containsMoonBerry}
+					<img src={map.collectedMoonBerry ? moonBerry : ghostMoonBerry} alt="The moon berry" />
+				{/if}
+			</div>
+		{/if}
 	</span>
 </a>
 
@@ -129,5 +216,9 @@
 		padding-right: 0.6em;
 		padding-left: 0.4em;
 		width: 1.2em;
+	}
+
+	#collectibles > img:first-child {
+		padding-left: 0.4em;
 	}
 </style>
