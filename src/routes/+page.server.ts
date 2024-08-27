@@ -24,7 +24,7 @@ export const load: PageServerLoad = async () => {
 
 	const goldenBerries = await prisma.map.count({ where: { deathlessOn: { not: null } } });
 	const goldeningBerries = await prisma.map.count({
-		where: { deathlessOn: { not: null }, numberOfRooms: { not: null } }
+		where: { deathlessPb: { not: null }, numberOfRooms: { not: null } }
 	});
 	const clearedMaps = await prisma.map.count({ where: { clearedOn: { not: null } } });
 
