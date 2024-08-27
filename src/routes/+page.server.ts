@@ -16,12 +16,6 @@ export const load: PageServerLoad = async () => {
 		}
 	});
 
-	const moonBerries = await prisma.map.count({
-		where: {
-			collectedMoonBerry: true
-		}
-	});
-
 	const goldenBerries = await prisma.map.count({ where: { deathlessOn: { not: null } } });
 	const goldeningBerries = await prisma.map.count({
 		where: { deathlessPb: { not: null }, numberOfRooms: { not: null } }
@@ -40,7 +34,6 @@ export const load: PageServerLoad = async () => {
 		goldenBerries,
 		goldeningBerries,
 		clearedMaps,
-		fullClearedMaps,
-		moonBerries
+		fullClearedMaps
 	};
 };
