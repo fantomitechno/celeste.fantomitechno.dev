@@ -26,8 +26,8 @@ export const actions: Actions = {
 		let categoryId: null | number = null;
 		if (category) categoryId = Number(category);
 
-		let berries: number | undefined = undefined;
-		if (berryCount) berries = Number(berryCount);
+		let containsBerries: number | undefined = undefined;
+		if (berryCount) containsBerries = Number(berryCount);
 
 		let numberOfRooms: number | undefined = undefined;
 		if (rooms) numberOfRooms = Number(rooms);
@@ -35,7 +35,7 @@ export const actions: Actions = {
 		await prisma.map.create({
 			data: {
 				name,
-				berries,
+				containsBerries,
 				numberOfRooms,
 				link,
 				categoryId,
