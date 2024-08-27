@@ -229,7 +229,7 @@
 	}
 
 	span > img {
-		padding: 0 0.2em;
+		margin: 0 0.2em;
 		width: 4em;
 		align-self: center;
 	}
@@ -317,6 +317,7 @@
 	}
 
 	#rainbow {
+		margin-top: 1em;
 		padding-left: 0.2em;
 		display: flex;
 		align-items: center;
@@ -325,7 +326,7 @@
 	}
 
 	#rainbow > img {
-		padding-right: 0.2em;
+		margin-right: 0.2em;
 		width: 2em;
 		align-self: center;
 	}

@@ -199,7 +199,7 @@
 	}
 
 	div > img {
-		padding-right: 0.2em;
+		margin-right: 0.2em;
 		width: 2em;
 		align-self: center;
 	}
@@ -211,12 +211,12 @@
 	}
 
 	#flag {
-		padding-right: 0.6em;
-		padding-left: 0.4em;
+		margin-right: 0.6em;
+		margin-left: 0.4em;
 		width: 1.2em;
 	}
 
 	#collectibles > img:first-child {
-		padding-left: 0.4em;
+		margin-left: 0.4em;
 	}
 </style>

@@ -552,7 +552,7 @@
 	}
 
 	span > img {
-		padding: 0 0.2em;
+		margin: 0 0.2em;
 		width: 4em;
 		align-self: center;
 	}

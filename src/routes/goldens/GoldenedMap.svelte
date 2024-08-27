@@ -116,7 +116,7 @@
 	}
 
 	div > img {
-		padding-right: 0.2em;
+		margin-right: 0.2em;
 		width: 2em;
 		align-self: center;
 	}
