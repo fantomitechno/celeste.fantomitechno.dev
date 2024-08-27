@@ -8,7 +8,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
     alias: {
-			".prisma/client/index-browser": "./node_modules/.prisma/client/index-browser.js"
+			".prisma/client/index-browser": "./node_modules/.pnpm/@prisma+client@5.18.0_prisma@5.18.0/node_modules/.prisma/client/index-browser.js"
 		}
 	}
 };
