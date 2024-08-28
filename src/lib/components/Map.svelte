@@ -1,19 +1,27 @@
 <script lang="ts">
+	// Collectibles
 	import defaultBerry from '$lib/images/berries/Strawberry_idle.webp';
-	import defaultMoonBerry from '$lib/images/berries/moonBerry.gif';
 	import defaultGhostBerry from '$lib/images/berries/ghostBerry.gif';
+	import defaultMoonBerry from '$lib/images/berries/moonBerry.gif';
+	import defaultGhostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
+	import cassette from '$lib/images/cassette.gif';
+	import cassetteGhost from '$lib/images/cassetteGhost.gif';
+
+	// Deathless Berries
 	import gberry from '$lib/images/berries/goldBerry.gif';
 	import ghostGBerry from '$lib/images/berries/ghostGoldBerry.gif';
 	import sberry from '$lib/images/berries/silverBerry.gif';
 	import ghostSBerry from '$lib/images/berries/ghostSilverBerry.gif';
 	import pberry from '$lib/images/berries/platBerry.gif';
 	import ghostPBerry from '$lib/images/berries/ghostPlatBerry.gif';
+	import flagCP from '$lib/images/FlagCP.gif';
+
+	// Clear informations
 	import dot from '$lib/images/journal/dot.png';
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
-	import flagCP from '$lib/images/FlagCP.gif';
-	import cassette from '$lib/images/cassette.gif';
-	import cassetteGhost from '$lib/images/cassetteGhost.gif';
+
+	// Hearts
 	import blueHeart from '$lib/images/hearts/BlueHeart.gif';
 	import yellowHeart from '$lib/images/hearts/YellowHeart.gif';
 	import redHeart from '$lib/images/hearts/RedHeart.gif';
@@ -26,7 +34,13 @@
 	import collabOrangeHeart from '$lib/images/hearts/CollabOrangeHeart.gif';
 	import collabPurpleHeart from '$lib/images/hearts/CollabPurpleHeart.gif';
 	import collabGhostHeart from '$lib/images/hearts/CollabGhostHeart.gif';
-	import defaultGhostMoonBerry from '$lib/images/berries/ghostMoonBerry.gif';
+
+	// Map types
+	import greenMap from '$lib/images/maps/green.png';
+	import yellowMap from '$lib/images/maps/yellow.png';
+	import redMap from '$lib/images/maps/red.png';
+	import crackedMap from '$lib/images/maps/cracked.png';
+	import heartSide from '$lib/images/maps/heartside.png';
 
 	import type { Campaign, Map } from '@prisma/client';
 	import { isFullCleared } from '$lib/clear';
@@ -134,15 +148,42 @@
 
 	const berry = map?.customBerry ?? defaultBerry;
 	const ghostBerry = map?.customGhostBerry ?? defaultGhostBerry;
+
+	let mapType = '';
+	switch (map?.mapType) {
+		case 'GREEN':
+			mapType = greenMap;
+			break;
+		case 'YELLOW':
+			mapType = yellowMap;
+			break;
+		case 'RED':
+			mapType = redMap;
+			break;
+		case 'CRACKED':
+			mapType = crackedMap;
+			break;
+		case 'HEARTSIDE':
+			if (!map.customHeartSide) mapType = heartSide;
+			else mapType = map.customHeartSide;
+			break;
+		default:
+			break;
+	}
 </script>
 
 <a href={'/map/' + map.id} class="map">
-	{map.name}
-	{#if map.mapper}
-		- by {map.mapper}
-	{:else if campaign?.mapper}
-		- by {campaign.mapper}
-	{/if}
+	<span id="title">
+		{map.name}
+		{#if map.mapper}
+			- by {map.mapper}
+		{:else if campaign?.mapper}
+			- by {campaign.mapper}
+		{/if}
+		{#if map.mapType}
+			<img src={mapType} alt="The Map type" />
+		{/if}
+	</span>
 	<span>
 		<div>
 			{#if map.clearedOn}
@@ -219,6 +260,17 @@
 	div > img {
 		margin-right: 0.2em;
 		width: 2em;
+		align-self: center;
+	}
+
+	#title {
+		display: flex;
+		align-items: center;
+	}
+
+	#title > img {
+		margin: 0 0.2em;
+		width: 3em;
 		align-self: center;
 	}
 

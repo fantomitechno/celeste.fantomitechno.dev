@@ -5,6 +5,12 @@
 	import pberry from '$lib/images/berries/platBerry.gif';
 	import clear from '$lib/images/journal/clear.png';
 	import fullclear from '$lib/images/journal/fullclear.png';
+	// Map types
+	import greenMap from '$lib/images/maps/green.png';
+	import yellowMap from '$lib/images/maps/yellow.png';
+	import redMap from '$lib/images/maps/red.png';
+	import crackedMap from '$lib/images/maps/cracked.png';
+	import heartSide from '$lib/images/maps/heartside.png';
 	import type { Campaign, Category, Map } from '@prisma/client';
 
 	export let map: Map & { Campaign: Campaign | null; Category: Category | null };
@@ -29,20 +35,47 @@
 		default:
 			break;
 	}
+
+	let mapType = '';
+	switch (map?.mapType) {
+		case 'GREEN':
+			mapType = greenMap;
+			break;
+		case 'YELLOW':
+			mapType = yellowMap;
+			break;
+		case 'RED':
+			mapType = redMap;
+			break;
+		case 'CRACKED':
+			mapType = crackedMap;
+			break;
+		case 'HEARTSIDE':
+			if (!map.customHeartSide) mapType = heartSide;
+			else mapType = map.customHeartSide;
+			break;
+		default:
+			break;
+	}
 </script>
 
 <span class="map">
 	<a href={'/map/' + map.id}> <div class="overlay"></div></a>
 	<span>
 		<hgroup>
-			<h1>
-				{map.name}
-				{#if map.mapper}
-					- by {map.mapper}
-				{:else if map.Campaign?.mapper}
-					- by {map.Campaign.mapper}
+			<span id="title">
+				<h1>
+					{map.name}
+					{#if map.mapper}
+						- by {map.mapper}
+					{:else if map.Campaign?.mapper}
+						- by {map.Campaign.mapper}
+					{/if}
+				</h1>
+				{#if map.mapType}
+					<img src={mapType} alt="The Map type" />
 				{/if}
-			</h1>
+			</span>
 			{#if map.Campaign}
 				<h2>
 					Map from
@@ -134,5 +167,16 @@
 		a:hover {
 			color: var(--color-secondary);
 		}
+	}
+
+	#title {
+		display: flex;
+		align-items: center;
+	}
+
+	#title > img {
+		margin: 0 0.2em;
+		width: 3em;
+		align-self: center;
 	}
 </style>

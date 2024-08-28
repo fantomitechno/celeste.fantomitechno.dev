@@ -2,7 +2,7 @@ import { prisma } from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { toTime } from '$lib/time';
-import type { DeathlessBerry, HeartType } from '@prisma/client';
+import type { DeathlessBerry, HeartType, MapType } from '@prisma/client';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const map = await prisma.map.findFirst({
@@ -37,6 +37,9 @@ export const actions: Actions = {
 		const link = data.get('link')?.valueOf() as string | undefined;
 		const mapper = data.get('mapper')?.valueOf() as string | null;
 		const video = data.get('video')?.valueOf() as string | null;
+
+		let mapType = data.get('mapType')?.valueOf() as MapType | null;
+		if (!mapType?.length) mapType = null;
 
 		// Date informations
 		const cleared = data.get('cleared')?.valueOf() as string | undefined;
@@ -121,6 +124,9 @@ export const actions: Actions = {
 		let customMoonBerry = data.get('customMoonBerry')?.valueOf() as string | null;
 		if (!customMoonBerry?.length) customMoonBerry = null;
 
+		let customHeartSide = data.get('customHeartSide')?.valueOf() as string | null;
+		if (!customHeartSide?.length) customHeartSide = null;
+
 		await prisma.map.update({
 			where: {
 				id: Number(params.mapId)
@@ -132,6 +138,7 @@ export const actions: Actions = {
 				link,
 				mapper,
 				video,
+				mapType,
 
 				clearedOn,
 				deathlessOn,
@@ -163,7 +170,8 @@ export const actions: Actions = {
 				customGhostBerry,
 				customBerry,
 				customGhostMoonBerry,
-				customMoonBerry
+				customMoonBerry,
+				customHeartSide
 			}
 		});
 	},

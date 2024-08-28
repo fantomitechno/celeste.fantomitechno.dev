@@ -19,6 +19,7 @@ model Map {
   order      Int       @default(0)
   mapper     String?
   video      String?
+  mapType    MapType?
 
   // Date informations
   clearedOn   DateTime?
@@ -55,8 +56,9 @@ model Map {
   customDeathlessBerry      String?
   customGhostBerry          String?
   customBerry               String?
-  customGhostMoonBerry          String?
-  customMoonBerry               String?
+  customGhostMoonBerry      String?
+  customMoonBerry           String?
+  customHeartSide           String?
 }
 
 enum DeathlessBerry {
@@ -76,6 +78,14 @@ enum HeartType {
   COLLAB_YELLOW
   COLLAB_ORANGE
   COLLAB_PURPLE
+}
+
+enum MapType {
+  GREEN
+  YELLOW
+  RED
+  CRACKED
+  HEARTSIDE
 }
 
 model Campaign {

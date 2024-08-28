@@ -41,6 +41,13 @@
 	import collabPurpleHeart from '$lib/images/hearts/CollabPurpleHeart.gif';
 	import collabGhostHeart from '$lib/images/hearts/CollabGhostHeart.gif';
 
+	// Map types
+	import greenMap from '$lib/images/maps/green.png';
+	import yellowMap from '$lib/images/maps/yellow.png';
+	import redMap from '$lib/images/maps/red.png';
+	import crackedMap from '$lib/images/maps/cracked.png';
+	import heartSide from '$lib/images/maps/heartside.png';
+
 	import type { Campaign, Category } from '@prisma/client';
 	import type { PageData } from './$types';
 
@@ -160,6 +167,28 @@
 		heart = map.customHeart;
 	}
 
+	let mapType = '';
+	switch (map?.mapType) {
+		case 'GREEN':
+			mapType = greenMap;
+			break;
+		case 'YELLOW':
+			mapType = yellowMap;
+			break;
+		case 'RED':
+			mapType = redMap;
+			break;
+		case 'CRACKED':
+			mapType = crackedMap;
+			break;
+		case 'HEARTSIDE':
+			if (!map.customHeartSide) mapType = heartSide;
+			else mapType = map.customHeartSide;
+			break;
+		default:
+			break;
+	}
+
 	const moonBerry = map?.customMoonBerry ?? defaultMoonBerry;
 	const ghostMoonBerry = map?.customGhostMoonBerry ?? defaultGhostMoonBerry;
 
@@ -198,6 +227,9 @@
 
 	let customMoonBerryUpload: FileList;
 	let customMoonBerryBase64 = map?.customMoonBerry ?? '';
+
+	let customHeartSideUpload: FileList;
+	let customHeartSideBase64 = map?.customHeartSide ?? '';
 </script>
 
 <svelte:head>
@@ -212,9 +244,14 @@
 	{:else}
 		<span id="title">
 			<hgroup>
-				<h1>
-					{map.name}
-				</h1>
+				<span id="titre">
+					<h1>
+						{map.name}
+					</h1>
+					{#if map.mapType}
+						<img src={mapType} alt="The Map type" />
+					{/if}
+				</span>
 				{#if map.Campaign}
 					<h2>
 						Map from <a href={`/campaign/${map.Campaign.id}`}>{map.Campaign.name}</a>
@@ -317,6 +354,28 @@
 							Mapper
 							<input name="mapper" type="text" value={map.mapper} />
 						</label>
+						<label>
+							Custom Heart Side
+							<input
+								type="file"
+								accept=".png,.jpg,.gif"
+								bind:files={customHeartSideUpload}
+								on:change={async () => {
+									customHeartSideBase64 = await readFileForTransfer(customHeartSideUpload);
+								}}
+							/>
+							<button
+								type="button"
+								class="upload-delete"
+								on:click={() => {
+									customHeartSideBase64 = '';
+								}}
+							>
+								Clear
+							</button>
+							<input type="text" name="customHeartSide" hidden bind:value={customHeartSideBase64} />
+						</label>
+						<img class="upload-preview" src={customHeartSideBase64} alt="" />
 					</div>
 					<div>
 						<label>
@@ -374,6 +433,18 @@
 									.map(([k, _]) => k)
 									.join(', ')}
 							{/if}
+						</label>
+
+						<label>
+							Map Type
+							<select name="mapType" value={map.mapType}>
+								<option value="GREEN">Green</option>
+								<option value="YELLOW">Yellow</option>
+								<option value="RED">Red</option>
+								<option value="CRACKED">Cracked</option>
+								<option value="HEARTSIDE">Heart Side</option>
+								<option value={null}>None</option>
+							</select>
 						</label>
 					</div>
 				</span>
@@ -868,5 +939,16 @@
 
 	.upload-preview {
 		width: 3em;
+	}
+
+	#titre {
+		display: flex;
+		align-items: center;
+	}
+
+	#titre > img {
+		margin-left: 0.5em;
+		width: 4em;
+		align-self: center;
 	}
 </style>
