@@ -6,6 +6,11 @@
 	let selected = Map;
 </script>
 
+<svelte:head>
+	<title>Admin page</title>
+	<meta name="theme-color" content="#2e1e45" />
+</svelte:head>
+
 <main>
 	<hgroup>
 		<h1>Create datas</h1>
