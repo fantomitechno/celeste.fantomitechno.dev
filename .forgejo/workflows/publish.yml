@@ -13,7 +13,7 @@ jobs:
     runs-on: docker
     steps:
       - name: Checkout repository
-        uses: https://code.forgejo.org/actions/checkout@v4
+        uses: https://github.com/actions/checkout@v3
 
       - name: Log in to the Container registry
         uses: https://github.com/docker/login-action@v1
