@@ -380,7 +380,7 @@
 					<div>
 						<label>
 							Search category
-							<Search type="category" bind:results={filteredCategories} />
+							<Search type="category" bind:results={filteredCategories as unknown[]} />
 							{#if filteredCategories.length != 0}
 								<ul>
 									{#each filteredCategories as category}
@@ -409,7 +409,7 @@
 						</label>
 						<label>
 							Search campaign
-							<Search type="campaign" bind:results={filteredCampaign} />
+							<Search type="campaign" bind:results={filteredCampaign as unknown[]} />
 							{#if filteredCampaign.length != 0}
 								<ul>
 									{#each filteredCampaign as campaign}

@@ -4,6 +4,8 @@
 	import GoldeningMap from './GoldeningMap.svelte';
 
 	export let data: PageData;
+
+	let checkVanilla = false;
 </script>
 
 <svelte:head>
@@ -13,12 +15,20 @@
 </svelte:head>
 
 <main>
-	<hgroup><h1>Maps I'm working on goldening</h1></hgroup>
+	<hgroup>
+		<h1>Maps I'm working on goldening</h1>
+	</hgroup>
 	{#if data.goldening.length == 0}
 		I'm not goldening any map currently
 	{:else}
+		<label>
+			<input type="checkbox" bind:checked={checkVanilla} />
+			Show vanilla maps
+		</label>
 		<span>
-			{#each data.goldening.sort((a, b) => b.deathlessPb! / b.numberOfRooms! - a.deathlessPb! / a.numberOfRooms!) as map}
+			{#each data.goldening
+				.filter((m) => checkVanilla || m.campaignId != 'vanilla')
+				.sort((a, b) => b.deathlessPb! / b.numberOfRooms! - a.deathlessPb! / a.numberOfRooms!) as map}
 				<GoldeningMap {map} />
 			{/each}
 		</span>
@@ -27,8 +37,12 @@
 	{#if data.goldens.length == 0}
 		I goldened no maps
 	{:else}
+		<label>
+			<input type="checkbox" bind:checked={checkVanilla} />
+			Show vanilla maps
+		</label>
 		<span>
-			{#each data.goldens as map}
+			{#each data.goldens.filter((m) => checkVanilla || m.campaignId != 'vanilla') as map}
 				<GoldenedMap {map} />
 			{/each}
 		</span>
